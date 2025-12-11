@@ -8,18 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
-        /* === 1. THIẾT LẬP THEME MÀU CAM - HỔ PHÁCH === */
+        /* === 1. THIẾT LẬP THEME === */
         :root {
-            --primary: #f97316;       /* Cam đậm */
-            --primary-light: #ffedd5; /* Cam nhạt */
+            --primary: #f97316;
+            --primary-light: #ffedd5;
             --gradient-main: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
-            --bg-body: #fff7ed;       /* Nền kem cam */
-            --text-main: #431407;     /* Nâu đậm */
-            --text-light: #78350f;    /* Nâu nhạt */
+            --bg-body: #fff7ed;
+            --text-main: #431407;
+            --text-light: #78350f;
             --white: #ffffff;
             --shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15);
             --radius: 20px;
@@ -59,7 +58,7 @@
         .cart-icon:hover { color: var(--primary); transform: scale(1.1); }
         .cart-count { position: absolute; top: -5px; right: -8px; background: #ef4444; color: white; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; }
 
-        /* === 4. TRANG CHỦ (HERO) === */
+        /* === 4. HERO SECTION === */
         .hero { padding: 60px 0; display: flex; align-items: center; gap: 50px; min-height: 85vh; }
         .hero-text { flex: 1; }
         .badge-top { display: inline-block; background: var(--primary); color: white; padding: 6px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
@@ -102,13 +101,12 @@
         .btn-view:hover { background: #fff7ed; border-color: var(--primary); }
         .btn-add { width: 45px; display: flex; align-items: center; justify-content: center; background: var(--gradient-main); color: white; border-radius: 12px; cursor: pointer; border: none; font-size: 20px; }
 
-        /* === 6. MODALS (Giỏ hàng & Chi tiết) === */
+        /* === 6. MODALS & FORM THANH TOÁN (ĐÃ UPDATE) === */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-content { background: white; width: 95%; max-width: 550px; padding: 30px; border-radius: 24px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); }
         .close-modal { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: #9ca3af; transition: 0.3s; }
         .close-modal:hover { color: var(--primary); transform: rotate(90deg); }
         
-        /* Style Giỏ hàng */
         .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .cart-item:last-child { border-bottom: none; }
         .cart-info { display: flex; align-items: center; gap: 15px; }
@@ -117,6 +115,18 @@
         .cart-text span { font-size: 14px; color: var(--primary); font-weight: 600; }
         .cart-total { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 2px dashed #fed7aa; font-size: 20px; font-weight: 800; color: var(--text-main); }
         .empty-msg { text-align: center; color: #9ca3af; padding: 40px 0; }
+
+        /* Form nhập liệu thanh toán */
+        .form-group { margin-bottom: 15px; }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 12px 15px; 
+            border: 1px solid #fed7aa; border-radius: 12px; 
+            outline: none; font-family: inherit; font-size: 14px;
+            transition: 0.3s;
+        }
+        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+        .checkout-view { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* === 7. CHAT BOX WIDGET === */
         .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
@@ -134,7 +144,7 @@
         .chat-send { background: none; border: none; color: var(--primary); font-size: 22px; cursor: pointer; transition: 0.2s; }
         .chat-send:hover { transform: translateX(3px); }
 
-        /* About & Tracking styles */
+        /* Các phần phụ khác */
         .story-box { background: white; padding: 40px; border-radius: 20px; margin-bottom: 40px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
         .story-box::before { content: '"'; position: absolute; top: 10px; left: 20px; font-size: 100px; color: #fff7ed; font-family: serif; z-index: 0; }
         .story-box p { position: relative; z-index: 1; }
@@ -148,76 +158,57 @@
         .search-box input { flex: 1; padding: 12px 24px; border: 2px solid #fed7aa; border-radius: 50px; outline: none; font-size: 16px; font-family: inherit; }
         .search-box button { width: 55px; height: 55px; border-radius: 50%; border: none; background: var(--gradient-main); color: white; cursor: pointer; font-size: 20px; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
 
-        /* Services Section */
         .services { padding: 80px 0; background: var(--white); text-align: center; }
         .service-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 8px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; margin-bottom: 20px; }
         .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; color: var(--text-dark); }
         .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .service-card {
-            background: white; padding: 40px 30px; border-radius: var(--radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f3f4f6;
-            transition: 0.3s; display: flex; flex-direction: column; align-items: center;
-        }
+        .service-card { background: white; padding: 40px 30px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f3f4f6; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15); border-color: #fed7aa; }
         .icon-box { width: 70px; height: 70px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; margin-bottom: 25px; box-shadow: 0 8px 15px rgba(249, 115, 22, 0.3); }
 
-        /* Footer */
         footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
         .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 10px; display: inline-block; color: white; }
-        
+
         /* ========================================= */
-        /* === MOBILE RESPONSIVE FIX (ĐÃ SỬA) === */
+        /* === MOBILE RESPONSIVE FIX (FULL) === */
         /* ========================================= */
         @media (max-width: 768px) {
-            /* 1. Sửa Header & Menu: Chuyển thành menu cuộn ngang */
             header { height: auto; padding: 15px 0; }
-            body { padding-top: 130px; } /* Đẩy nội dung xuống vì header cao hơn */
+            body { padding-top: 130px; }
             
             .nav-inner { flex-wrap: wrap; gap: 10px; }
             .logo { flex: 1; font-size: 22px; }
             .cart-icon { order: 2; }
             
-            /* Menu hiển thị lại, có thanh cuộn ngang */
-            .menu { 
-                display: flex !important; 
-                order: 3; 
-                width: 100%; 
-                overflow-x: auto; 
-                gap: 10px; 
-                padding-bottom: 5px; 
-                -ms-overflow-style: none; /* Ẩn thanh cuộn IE/Edge */
-                scrollbar-width: none; /* Ẩn thanh cuộn Firefox */
-            }
-            .menu::-webkit-scrollbar { display: none; /* Ẩn thanh cuộn Chrome/Safari */ }
-            
-            .menu-item { 
-                background: #fff7ed; 
-                padding: 8px 16px; 
-                border-radius: 20px; 
-                font-size: 14px;
-                flex-shrink: 0; /* Không cho co lại */
-            }
+            .menu { display: flex !important; order: 3; width: 100%; overflow-x: auto; gap: 10px; padding-bottom: 5px; -ms-overflow-style: none; scrollbar-width: none; }
+            .menu::-webkit-scrollbar { display: none; }
+            .menu-item { background: #fff7ed; padding: 8px 16px; border-radius: 20px; font-size: 14px; flex-shrink: 0; }
             .menu-item.active { background: var(--primary); color: white; }
             .menu-item.active::after { display: none; }
 
-            /* 2. Sửa Hero Section */
             .hero { flex-direction: column-reverse; text-align: center; padding-top: 20px; gap: 30px; }
-            .hero-text h1 { font-size: 2.4rem; } /* Giảm size chữ to */
+            .hero-text h1 { font-size: 2.4rem; }
             .hero-btns { justify-content: center; }
             .image-card-bg { max-width: 80%; margin: 0 auto; }
 
-            /* 3. Sửa Layout Lưới (Grid) */
-            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; } /* 2 cột sản phẩm */
-            .p-img { height: 160px; } /* Ảnh nhỏ lại chút */
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .p-img { height: 160px; }
             .p-info { padding: 12px; }
             .p-name { font-size: 15px; }
             .p-price { font-size: 16px; }
             
-            .service-grid, .founder-grid { grid-template-columns: 1fr; } /* 1 cột cho dịch vụ & founder */
-            .filter-bar { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; } /* Cuộn ngang bộ lọc */
+            .service-grid, .founder-grid { grid-template-columns: 1fr; }
+            .filter-bar { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; }
 
-            /* 4. Sửa Chat & Modal */
-            .chat-box { width: 90%; right: 5%; bottom: 100px; height: 400px; }
+            /* FIX CHAT BOX MOBILE */
+            .chat-widget { z-index: 10000; }
+            .chat-box { 
+                position: fixed; 
+                width: 90vw; height: 60vh; 
+                bottom: 100px; right: 5vw; left: 5vw; 
+                z-index: 10001; border-radius: 20px; 
+                transform-origin: bottom right; 
+            }
             .modal-content { width: 92%; padding: 20px; }
             .search-box button { width: 45px; height: 45px; }
         }
@@ -258,7 +249,7 @@
                 </div>
                 <div class="hero-img">
                     <div class="image-card-bg">
-                        <img src="hero-img.jpg" alt="Nấm Chay Food Cute">
+                        <img src="hero-img.jpg" alt="Sản phẩm Chay Food">
                         
                         <div class="float-badge badge-new" style="--r: 5deg;">✨ Mới Ra Mắt</div>
                         <div class="float-badge badge-organic" style="--r: -5deg;">🌿 100% Organic</div>
@@ -399,17 +390,49 @@
     <div id="cart-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('cart-modal')"><i class="ri-close-line"></i></span>
-            <h2 class="text-gradient" style="margin-bottom: 20px;">Giỏ Hàng Của Bạn</h2>
             
-            <div id="cart-items-container" style="max-height: 300px; overflow-y: auto; padding-right: 5px;">
+            <div id="cart-view">
+                <h2 class="text-gradient" style="margin-bottom: 20px;">Giỏ Hàng Của Bạn</h2>
+                <div id="cart-items-container" style="max-height: 300px; overflow-y: auto; padding-right: 5px;"></div>
+                
+                <div class="cart-total">
+                    <span>Tổng cộng:</span>
+                    <span id="cart-total-price" style="color: var(--primary);">0đ</span>
                 </div>
-            
-            <div class="cart-total">
-                <span>Tổng cộng:</span>
-                <span id="cart-total-price" style="color: var(--primary);">0đ</span>
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="showCheckout()">Tiến Hành Thanh Toán</button>
             </div>
-            
-            <button class="btn btn-primary" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="alert('Chức năng thanh toán đang được tích hợp!')">Thanh Toán Ngay</button>
+
+            <div id="checkout-view" class="checkout-view hidden">
+                <h2 class="text-gradient" style="margin-bottom: 20px;">Thông Tin Giao Hàng</h2>
+                <div class="form-group"><input type="text" id="c-name" placeholder="Họ và tên người nhận"></div>
+                <div class="form-group"><input type="tel" id="c-phone" placeholder="Số điện thoại liên hệ"></div>
+                <div class="form-group"><input type="text" id="c-address" placeholder="Địa chỉ nhận hàng"></div>
+                <div class="form-group">
+                    <select id="c-method">
+                        <option value="cod">💵 Thanh toán khi nhận hàng (COD)</option>
+                        <option value="ck">🏦 Chuyển khoản ngân hàng</option>
+                    </select>
+                </div>
+                <div class="cart-total" style="border-top: none; margin-top: 10px; padding-top: 0; font-size: 16px;">
+                    <span>Thành tiền:</span> <span id="checkout-total" style="color: var(--primary);">0đ</span>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-white" style="flex: 1; justify-content: center; border: 1px solid #eee;" onclick="showCart()">Quay lại</button>
+                    <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="submitOrder()">Xác Nhận</button>
+                </div>
+            </div>
+
+            <div id="success-view" class="hidden" style="text-align: center; padding: 20px 0;">
+                <div style="width: 80px; height: 80px; background: #4ade80; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px;">
+                    <i class="ri-check-line"></i>
+                </div>
+                <h2 style="color: #15803d; margin-bottom: 10px;">Đặt Hàng Thành Công!</h2>
+                <p style="color: #666; font-size: 14px; margin-bottom: 25px;">
+                    Cảm ơn bạn <b id="succ-name"></b>.<br>
+                    DAPY sẽ liên hệ chốt đơn qua SĐT <b id="succ-phone"></b> trong ít phút nữa nhé!
+                </p>
+                <button class="btn btn-primary" onclick="closeModal('cart-modal'); showCart();" style="width: 100%; justify-content: center;">Tiếp Tục Mua Sắm</button>
+            </div>
         </div>
     </div>
 
@@ -574,10 +597,65 @@
 
         function openCart() {
             updateCartUI();
+            // Luôn reset về view giỏ hàng khi mở lên
+            showCart(); 
             document.getElementById('cart-modal').classList.remove('hidden');
         }
 
-        // 6. CHAT BOX LOGIC
+        // 6. XỬ LÝ THANH TOÁN (MỚI)
+        function showCheckout() {
+            if(cartItems.length === 0) { 
+                alert("Giỏ hàng đang trống trơn nè! 😢"); 
+                return; 
+            }
+            document.getElementById('cart-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.remove('hidden');
+            document.getElementById('checkout-total').innerText = document.getElementById('cart-total-price').innerText;
+        }
+
+        function showCart() {
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('cart-view').classList.remove('hidden');
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('c-name').value.trim();
+            const phone = document.getElementById('c-phone').value.trim();
+            const addr = document.getElementById('c-address').value.trim();
+            
+            // 1. Kiểm tra nếu chưa điền đủ
+            if(!name || !phone || !addr) { 
+                // Rung nhẹ màn hình hoặc đổi màu viền đỏ để báo lỗi
+                document.getElementById('c-name').style.borderColor = !name ? 'red' : '#fed7aa';
+                document.getElementById('c-phone').style.borderColor = !phone ? 'red' : '#fed7aa';
+                document.getElementById('c-address').style.borderColor = !addr ? 'red' : '#fed7aa';
+                alert("Bạn ơi, điền đủ thông tin để DAPY giao hàng nhé! 🥺"); 
+                return; 
+            }
+            
+            // 2. Nếu điền đủ -> Hiện màn hình thành công
+            document.getElementById('succ-name').innerText = name;
+            document.getElementById('succ-phone').innerText = phone;
+            
+            // Ẩn form, hiện thông báo xanh lá
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('success-view').classList.remove('hidden');
+            
+            // Reset giỏ hàng
+            cartItems = [];
+            updateCartUI();
+            
+            // Xóa trắng form nhập liệu cho lần sau
+            document.getElementById('c-name').value = '';
+            document.getElementById('c-phone').value = '';
+            document.getElementById('c-address').value = '';
+            
+            // Reset màu viền về bình thường
+            document.getElementById('c-name').style.borderColor = '#fed7aa';
+            document.getElementById('c-phone').style.borderColor = '#fed7aa';
+            document.getElementById('c-address').style.borderColor = '#fed7aa';
+        }
+        // 7. CHAT BOX LOGIC
         function toggleChat() {
             const box = document.getElementById('chat-box');
             box.classList.toggle('hidden');
