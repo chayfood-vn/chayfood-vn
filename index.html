@@ -168,6 +168,55 @@
 
         footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
         .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 10px; display: inline-block; color: white; }
+        /* === STYLE LIÊN HỆ MỚI (CONTACT CARDS) === */
+        .contact-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            margin-top: 50px; 
+        }
+        .contact-card { 
+            background: white; 
+            padding: 35px 20px; 
+            border-radius: 24px; 
+            text-align: center; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03); 
+            border: 1px solid #fff1f2; 
+            transition: all 0.3s ease; 
+        }
+        .contact-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--shadow); 
+            border-color: #fed7aa; 
+        }
+        .c-icon-box { 
+            width: 70px; height: 70px; 
+            background: #fff7ed; 
+            color: var(--primary); 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 28px; 
+            margin: 0 auto 20px; 
+            transition: 0.3s; 
+        }
+        .contact-card:hover .c-icon-box { 
+            background: var(--gradient-main); 
+            color: white; 
+            transform: rotateY(180deg); 
+        }
+        .c-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+        .c-info { color: var(--text-light); font-size: 14px; margin-bottom: 20px; line-height: 1.6; min-height: 45px; }
+        .c-btn { 
+            display: inline-flex; align-items: center; gap: 5px; 
+            padding: 8px 20px; 
+            border: 2px solid #fed7aa; 
+            border-radius: 30px; 
+            color: var(--primary); 
+            text-decoration: none; 
+            font-weight: 700; font-size: 13px; 
+            transition: 0.3s; 
+        }
+        .c-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         /* ========================================= */
         /* === MOBILE RESPONSIVE FIX (FULL) === */
@@ -265,7 +314,7 @@
                         <div class="service-card">
                             <div class="icon-box"><i class="ri-truck-fill"></i></div>
                             <h3>30 Phút Giao Hàng</h3>
-                            <p>Giao hàng siêu tốc khu vực nội thành. Đảm bảo sản phẩm luôn tươi ngon nhất.</p>
+                            <p>Giao hàng siêu tốc khu vực nội thành. Đảm bảo sản phẩm luôn chất lượng nhất.</p>
                         </div>
                         <div class="service-card">
                             <div class="icon-box"><i class="ri-bank-card-fill"></i></div>
@@ -309,12 +358,19 @@
                     Ngày nay, khi cuộc sống ngày càng no đủ thì nhu cầu về hạnh phúc ngày càng được chú trọng. Kéo theo đó là nhu cầu về đồ ăn vặt và sức khỏe ngày càng tăng cao. Nhận thấy được điều đó, <strong>nhóm DAPY</strong> đã tạo ra thương hiệu <strong>CHAY FOOD</strong>.
                 </p>
                 <p style="font-size: 1.1rem; line-height: 1.8;">
-                    CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại, mỗi nguyên liệu đều mang trong mình một sứ mệnh riêng. Chúng tôi cam kết mỗi sản phẩm đều chứa trong nó những tinh túy của thiên nhiên. <br><br>
-                    <strong>DAPY - ĐỒNG HÀNH CÙNG SỨC KHỎE CỦA BẠN.</strong>
+                    CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại, mỗi nguyên liệu đều mang trong mình một sứ mệnh riêng. Chúng tôi cam kết mỗi sản phẩm đều chứa trong nó những tinh túy của thiên nhiên.
                 </p>
-            </div>
 
-            <h3 style="text-align: center; margin-bottom: 30px;">Đội Ngũ Sáng Lập</h3>
+                <div style="text-align: center; margin-top: 30px; border-top: 1px dashed #fed7aa; padding-top: 20px;">
+                    <strong class="text-gradient" style="font-size: 1.4rem; display: block; text-transform: uppercase;">
+                        "DAPY - ĐỒNG HÀNH CÙNG SỨC KHỎE CỦA BẠN"
+                    </strong>
+                </div>
+                </div>
+
+             <div style="text-align: center; margin-top: 60px;">
+                <h3 class="section-title" style="font-size: 2rem; margin-bottom: 10px;">Đội Ngũ <span class="text-gradient">Sáng Lập</span></h3>
+
             <div class="founder-grid">
                 <div class="founder-card">
                     <img src="https://ui-avatars.com/api/?name=Phuong+Anh&background=f97316&color=fff&size=128" class="founder-avatar" alt="PA">
@@ -328,12 +384,44 @@
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 50px; background: white; padding: 30px; border-radius: 20px;">
-                <h3 style="margin-bottom: 20px;">Liên Hệ</h3>
-                <p><i class="ri-phone-fill" style="color: var(--primary)"></i> 0967.428.022 - 0981.219.140</p>
-                <p><i class="ri-mail-fill" style="color: var(--primary)"></i> duylecong60@gmail.com</p>
-                <p><i class="ri-map-pin-fill" style="color: var(--primary)"></i> Cây đa quán - xã Khoái Châu - Tỉnh Hưng Yên</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <h3 class="section-title" style="font-size: 2rem; margin-bottom: 10px;">Liên Hệ <span class="text-gradient">DAPY</span></h3>
+                <p style="color: var(--text-light);">Luôn sẵn sàng hỗ trợ bạn 24/7</p>
             </div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="c-icon-box"><i class="ri-phone-fill"></i></div>
+                    <div class="c-title">Hotline Đặt Hàng</div>
+                    <div class="c-info">
+                        0967.428.022<br>
+                        0981.219.140
+                    </div>
+                    <a href="tel:0967428022" class="c-btn">Gọi Ngay <i class="ri-arrow-right-line"></i></a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="c-icon-box"><i class="ri-mail-send-fill"></i></div>
+                    <div class="c-title">Email Hỗ Trợ</div>
+                    <div class="c-info">
+                        duylecong60@gmail.com<br>
+                        Phản hồi trong 24h
+                    </div>
+                    <a href="mailto:duylecong60@gmail.com" class="c-btn">Gửi Email <i class="ri-arrow-right-line"></i></a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="c-icon-box"><i class="ri-map-pin-2-fill"></i></div>
+                    <div class="c-title">Ghé Thăm Shop</div>
+                    <div class="c-info">
+                        Cây đa quán - xã Khoái Châu<br>
+                        Tỉnh Hưng Yên
+                    </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Cây+đa+quán+xã+Khoái+Châu+Hưng+Yên" target="_blank" class="c-btn">Xem Bản Đồ <i class="ri-arrow-right-line"></i></a>
+                </div>
+            </div>
+            
+
         </section>
 
         <section id="tracking" class="page-section hidden">
