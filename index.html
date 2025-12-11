@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chay Food - Tinh Hoa Ẩm Thực Chay</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* === 1. THIẾT LẬP THEME MÀU CAM - HỔ PHÁCH === */
+        :root {
+            --primary: #f97316;       /* Cam đậm */
+            --primary-light: #ffedd5; /* Cam nhạt */
+            --gradient-main: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+            --bg-body: #fff7ed;       /* Nền kem cam */
+            --text-main: #431407;     /* Nâu đậm */
+            --text-light: #78350f;    /* Nâu nhạt */
+            --white: #ffffff;
+            --shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15);
+            --radius: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-top: 80px;
+            overflow-x: hidden;
+        }
+
+        /* === 2. TIỆN ÍCH CHUNG === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .text-gradient { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; transition: 0.3s; font-family: inherit; }
+        .btn-primary { background: var(--gradient-main); color: white; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5); }
+        .btn-white { background: white; color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .btn-danger { background: #ef4444; color: white; padding: 6px 12px; font-size: 13px; }
+        .hidden { display: none !important; }
+
+        /* === 3. HEADER === */
+        header { position: fixed; top: 0; width: 100%; height: 80px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 1px solid #fed7aa; display: flex; align-items: center; transition: all 0.3s; }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .menu { display: flex; gap: 30px; }
+        .menu-item { cursor: pointer; font-weight: 600; color: var(--text-light); transition: 0.3s; position: relative; white-space: nowrap; }
+        .menu-item:hover, .menu-item.active { color: var(--primary); }
+        .menu-item.active::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 3px; background: var(--primary); border-radius: 10px; }
+        
+        .cart-icon { position: relative; cursor: pointer; font-size: 24px; transition: 0.3s; color: var(--text-main); }
+        .cart-icon:hover { color: var(--primary); transform: scale(1.1); }
+        .cart-count { position: absolute; top: -5px; right: -8px; background: #ef4444; color: white; font-size: 11px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; }
+
+        /* === 4. TRANG CHỦ (HERO) === */
+        .hero { padding: 60px 0; display: flex; align-items: center; gap: 50px; min-height: 85vh; }
+        .hero-text { flex: 1; }
+        .badge-top { display: inline-block; background: var(--primary); color: white; padding: 6px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
+        .hero-text h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 20px; font-weight: 900; letter-spacing: -1px; }
+        .hero-text p { font-size: 1.1rem; color: var(--text-light); margin-bottom: 35px; max-width: 90%; }
+        .hero-btns { display: flex; gap: 15px; }
+
+        .hero-img { flex: 1; display: flex; justify-content: center; position: relative; }
+        .image-card-bg { 
+            background: white; width: 100%; max-width: 450px; aspect-ratio: 1/1; 
+            border-radius: 40px; box-shadow: var(--shadow); 
+            display: flex; align-items: center; justify-content: center; 
+            position: relative; padding: 20px;
+        }
+        .image-card-bg img { width: 100%; height: 100%; object-fit: contain; border-radius: 30px; }
+        
+        .float-badge { position: absolute; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 700; box-shadow: var(--shadow); z-index: 10; animation: float 3s infinite ease-in-out; }
+        .badge-new { background: #fbbf24; color: white; top: -20px; right: -20px; transform: rotate(10deg); }
+        .badge-organic { background: #4ade80; color: white; bottom: -20px; left: -20px; transform: rotate(-5deg); animation-delay: 1.5s; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-10px) rotate(var(--r, 0deg)); } }
+
+        /* === 5. SẢN PHẨM === */
+        .products-section { padding: 40px 0; }
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;}
+        .filter-btn { padding: 10px 24px; border: 2px solid #fed7aa; border-radius: 50px; background: white; color: var(--text-light); cursor: pointer; transition: 0.3s; font-weight: 600; font-family: inherit; }
+        .filter-btn.active, .filter-btn:hover { background: var(--gradient-main); color: white; border-color: transparent; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
+        .product-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; border: 1px solid #fff1f2; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: #fed7aa; }
+        .p-img { height: 220px; background: #fff7ed; overflow: hidden; position: relative; }
+        .p-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover .p-img img { transform: scale(1.1); }
+        .p-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .p-cat { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 5px; }
+        .p-name { font-weight: 700; font-size: 18px; margin-bottom: 10px; color: var(--text-main); }
+        .p-price { font-weight: 800; color: var(--primary); font-size: 20px; margin-bottom: 15px; }
+        .p-actions { display: flex; gap: 10px; margin-top: auto; }
+        .btn-view { flex: 1; padding: 10px; border: 2px solid #fed7aa; border-radius: 12px; font-weight: 600; background: white; cursor: pointer; transition: 0.3s; }
+        .btn-view:hover { background: #fff7ed; border-color: var(--primary); }
+        .btn-add { width: 45px; display: flex; align-items: center; justify-content: center; background: var(--gradient-main); color: white; border-radius: 12px; cursor: pointer; border: none; font-size: 20px; }
+
+        /* === 6. MODALS (Giỏ hàng & Chi tiết) === */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; width: 95%; max-width: 550px; padding: 30px; border-radius: 24px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); }
+        .close-modal { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: #9ca3af; transition: 0.3s; }
+        .close-modal:hover { color: var(--primary); transform: rotate(90deg); }
+        
+        /* Style Giỏ hàng */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-info { display: flex; align-items: center; gap: 15px; }
+        .cart-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; background: #f9f9f9; }
+        .cart-text h4 { font-size: 16px; margin: 0; font-weight: 700; }
+        .cart-text span { font-size: 14px; color: var(--primary); font-weight: 600; }
+        .cart-total { display: flex; justify-content: space-between; margin-top: 25px; padding-top: 20px; border-top: 2px dashed #fed7aa; font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .empty-msg { text-align: center; color: #9ca3af; padding: 40px 0; }
+
+        /* === 7. CHAT BOX WIDGET === */
+        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
+        .chat-toggle { width: 60px; height: 60px; background: var(--gradient-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; cursor: pointer; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5); transition: 0.3s; }
+        .chat-toggle:hover { transform: scale(1.1) rotate(-10deg); }
+        .chat-box { position: absolute; bottom: 80px; right: 0; width: 350px; height: 450px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #fed7aa; transform-origin: bottom right; animation: popUp 0.3s ease; }
+        @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .chat-header { background: var(--gradient-main); color: white; padding: 15px 20px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #fff7ed; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 14px; line-height: 1.5; }
+        .msg-bot { background: white; border: 1px solid #fed7aa; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; box-shadow: 0 2px 5px rgba(249, 115, 22, 0.3); }
+        .chat-footer { padding: 10px; background: white; border-top: 1px solid #f3f4f6; display: flex; gap: 10px; align-items: center; }
+        .chat-input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #e5e7eb; outline: none; font-family: inherit; }
+        .chat-send { background: none; border: none; color: var(--primary); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .chat-send:hover { transform: translateX(3px); }
+
+        /* About & Tracking styles */
+        .story-box { background: white; padding: 40px; border-radius: 20px; margin-bottom: 40px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+        .story-box::before { content: '"'; position: absolute; top: 10px; left: 20px; font-size: 100px; color: #fff7ed; font-family: serif; z-index: 0; }
+        .story-box p { position: relative; z-index: 1; }
+        .founder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+        .founder-card { text-align: center; padding: 25px; background: white; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.3s; }
+        .founder-card:hover { transform: translateY(-5px); }
+        .founder-avatar { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 15px; object-fit: cover; border: 4px solid #fff7ed; }
+        
+        .tracking-result { text-align: left; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); margin-top: 30px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 10px; }
+        .search-box input { flex: 1; padding: 12px 24px; border: 2px solid #fed7aa; border-radius: 50px; outline: none; font-size: 16px; font-family: inherit; }
+        .search-box button { width: 55px; height: 55px; border-radius: 50%; border: none; background: var(--gradient-main); color: white; cursor: pointer; font-size: 20px; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
+
+        /* Services Section */
+        .services { padding: 80px 0; background: var(--white); text-align: center; }
+        .service-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 8px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; margin-bottom: 20px; }
+        .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; color: var(--text-dark); }
+        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .service-card {
+            background: white; padding: 40px 30px; border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f3f4f6;
+            transition: 0.3s; display: flex; flex-direction: column; align-items: center;
+        }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15); border-color: #fed7aa; }
+        .icon-box { width: 70px; height: 70px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; margin-bottom: 25px; box-shadow: 0 8px 15px rgba(249, 115, 22, 0.3); }
+
+        /* Footer */
+        footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
+        .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 10px; display: inline-block; color: white; }
+        
+        /* ========================================= */
+        /* === MOBILE RESPONSIVE FIX (ĐÃ SỬA) === */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            /* 1. Sửa Header & Menu: Chuyển thành menu cuộn ngang */
+            header { height: auto; padding: 15px 0; }
+            body { padding-top: 130px; } /* Đẩy nội dung xuống vì header cao hơn */
+            
+            .nav-inner { flex-wrap: wrap; gap: 10px; }
+            .logo { flex: 1; font-size: 22px; }
+            .cart-icon { order: 2; }
+            
+            /* Menu hiển thị lại, có thanh cuộn ngang */
+            .menu { 
+                display: flex !important; 
+                order: 3; 
+                width: 100%; 
+                overflow-x: auto; 
+                gap: 10px; 
+                padding-bottom: 5px; 
+                -ms-overflow-style: none; /* Ẩn thanh cuộn IE/Edge */
+                scrollbar-width: none; /* Ẩn thanh cuộn Firefox */
+            }
+            .menu::-webkit-scrollbar { display: none; /* Ẩn thanh cuộn Chrome/Safari */ }
+            
+            .menu-item { 
+                background: #fff7ed; 
+                padding: 8px 16px; 
+                border-radius: 20px; 
+                font-size: 14px;
+                flex-shrink: 0; /* Không cho co lại */
+            }
+            .menu-item.active { background: var(--primary); color: white; }
+            .menu-item.active::after { display: none; }
+
+            /* 2. Sửa Hero Section */
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 20px; gap: 30px; }
+            .hero-text h1 { font-size: 2.4rem; } /* Giảm size chữ to */
+            .hero-btns { justify-content: center; }
+            .image-card-bg { max-width: 80%; margin: 0 auto; }
+
+            /* 3. Sửa Layout Lưới (Grid) */
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; } /* 2 cột sản phẩm */
+            .p-img { height: 160px; } /* Ảnh nhỏ lại chút */
+            .p-info { padding: 12px; }
+            .p-name { font-size: 15px; }
+            .p-price { font-size: 16px; }
+            
+            .service-grid, .founder-grid { grid-template-columns: 1fr; } /* 1 cột cho dịch vụ & founder */
+            .filter-bar { overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; } /* Cuộn ngang bộ lọc */
+
+            /* 4. Sửa Chat & Modal */
+            .chat-box { width: 90%; right: 5%; bottom: 100px; height: 400px; }
+            .modal-content { width: 92%; padding: 20px; }
+            .search-box button { width: 45px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-inner">
+            <div class="logo" onclick="switchPage('home')">
+                <i class="ri-leaf-fill"></i> CHAY FOOD
+            </div>
+            <nav class="menu">
+                <div class="menu-item active" onclick="switchPage('home')">Trang chủ</div>
+                <div class="menu-item" onclick="switchPage('products')">Sản phẩm</div>
+                <div class="menu-item" onclick="switchPage('about')">Về chúng tôi</div>
+                <div class="menu-item" onclick="switchPage('tracking')">Tra cứu đơn</div>
+            </nav>
+            <div class="cart-icon" onclick="openCart()">
+                <i class="ri-shopping-cart-2-line"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div id="home" class="page-section">
+            <section class="hero">
+                <div class="hero-text">
+                    <div class="badge-top">⚡ 100% Chay - 100% Tự Nhiên</div>
+                    <h1>Đồ Ăn Vặt <br><span class="text-gradient">Thuần Chay</span> Trọn Vị</h1>
+                    <p>CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại. Cam kết mỗi sản phẩm đều chứa đựng tinh túy của thiên nhiên, mang lại sức khỏe vàng cho bạn.</p>
+                    <div class="hero-btns">
+                        <button class="btn btn-primary" onclick="switchPage('products')">Mua Ngay <i class="ri-arrow-right-line"></i></button>
+                        <button class="btn btn-white" onclick="switchPage('about')">Tìm Hiểu Thêm</button>
+                    </div>
+                </div>
+                <div class="hero-img">
+                    <div class="image-card-bg">
+                        <img src="hero-img.jpg" alt="Nấm Chay Food Cute">
+                        
+                        <div class="float-badge badge-new" style="--r: 5deg;">✨ Mới Ra Mắt</div>
+                        <div class="float-badge badge-organic" style="--r: -5deg;">🌿 100% Organic</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="services">
+                <div class="container">
+                    <div class="service-badge">Dịch Vụ Của Chúng Tôi</div>
+                    <h2 class="section-title">Trải Nghiệm <br><span class="text-gradient">Đặt Hàng Hoàn Hảo</span></h2>
+                    <div class="service-grid">
+                        <div class="service-card">
+                            <div class="icon-box"><i class="ri-truck-fill"></i></div>
+                            <h3>30 Phút Giao Hàng</h3>
+                            <p>Giao hàng siêu tốc khu vực nội thành. Đảm bảo sản phẩm luôn tươi ngon nhất.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon-box"><i class="ri-bank-card-fill"></i></div>
+                            <h3>Nhiều Phương Thức</h3>
+                            <p>Thanh toán linh hoạt: COD, MoMo, ZaloPay, VNPay. Tiện lợi và bảo mật.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon-box"><i class="ri-customer-service-2-fill"></i></div>
+                            <h3>Luôn Sẵn Sàng</h3>
+                            <p>Đội ngũ DAPY hỗ trợ 24/7. Giải đáp mọi thắc mắc và xử lý đơn hàng tận tâm.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section id="products" class="page-section hidden">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Thực Đơn <span class="text-gradient">Xanh</span></h2>
+                <p style="color: var(--text-light)">Tuyển tập những món ăn vặt healthy ngon nhất</p>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterProducts('all', this)">Tất cả</button>
+                <button class="filter-btn" onclick="filterProducts('rongbien', this)">Rong biển</button>
+                <button class="filter-btn" onclick="filterProducts('nam', this)">Nấm</button>
+                <button class="filter-btn" onclick="filterProducts('khac', this)">Khác</button>
+            </div>
+
+            <div class="product-grid" id="product-list">
+                </div>
+        </section>
+
+        <section id="about" class="page-section hidden" style="padding: 50px 0;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem;">Về <span class="text-gradient">Chay Food</span></h2>
+            </div>
+            
+            <div class="story-box">
+                <p style="margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8;">
+                    Ngày nay, khi cuộc sống ngày càng no đủ thì nhu cầu về hạnh phúc ngày càng được chú trọng. Kéo theo đó là nhu cầu về đồ ăn vặt và sức khỏe ngày càng tăng cao. Nhận thấy được điều đó, <strong>nhóm DAPY</strong> đã tạo ra thương hiệu <strong>CHAY FOOD</strong>.
+                </p>
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại, mỗi nguyên liệu đều mang trong mình một sứ mệnh riêng. Chúng tôi cam kết mỗi sản phẩm đều chứa trong nó những tinh túy của thiên nhiên. <br><br>
+                    <strong>DAPY - ĐỒNG HÀNH CÙNG SỨC KHỎE CỦA BẠN.</strong>
+                </p>
+            </div>
+
+            <h3 style="text-align: center; margin-bottom: 30px;">Đội Ngũ Sáng Lập</h3>
+            <div class="founder-grid">
+                <div class="founder-card">
+                    <img src="https://ui-avatars.com/api/?name=Phuong+Anh&background=f97316&color=fff&size=128" class="founder-avatar" alt="PA">
+                    <h4>Đỗ Thị Phương Anh</h4>
+                    <p style="color: var(--text-light); font-size: 14px;">Co-Founder</p>
+                </div>
+                <div class="founder-card">
+                    <img src="https://ui-avatars.com/api/?name=Duc+Duy&background=fbbf24&color=fff&size=128" class="founder-avatar" alt="DD">
+                    <h4>Lê Công Đức Duy</h4>
+                    <p style="color: var(--text-light); font-size: 14px;">Co-Founder</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px; background: white; padding: 30px; border-radius: 20px;">
+                <h3 style="margin-bottom: 20px;">Liên Hệ</h3>
+                <p><i class="ri-phone-fill" style="color: var(--primary)"></i> 0967.428.022 - 0981.219.140</p>
+                <p><i class="ri-mail-fill" style="color: var(--primary)"></i> duylecong60@gmail.com</p>
+                <p><i class="ri-map-pin-fill" style="color: var(--primary)"></i> Cây đa quán - xã Khoái Châu - Tỉnh Hưng Yên</p>
+            </div>
+        </section>
+
+        <section id="tracking" class="page-section hidden">
+            <div style="max-width: 600px; margin: 50px auto; text-align: center;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Tra Cứu Đơn Hàng</h2>
+                <div class="search-box">
+                    <input type="text" id="order-id" placeholder="Nhập mã đơn hàng (VD: DAPY123)">
+                    <button onclick="checkOrder()"><i class="ri-search-line"></i></button>
+                </div>
+                <p style="color: var(--text-gray); font-size: 14px;">Nhập mã đơn hàng để xem chi tiết hành trình vận chuyển.</p>
+
+                <div id="tracking-result" class="tracking-result hidden">
+                    <h3 style="margin-bottom: 10px;">Đơn hàng: <span style="color: var(--primary)" id="result-code"></span></h3>
+                    <p>Trạng thái: <strong>Đang giao hàng</strong></p>
+                    <div style="margin-top: 30px; display: flex; justify-content: space-between; position: relative;">
+                        <div style="position: absolute; top: 15px; left:0; width: 100%; height: 2px; background: #eee; z-index:0;"></div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-check-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700; color: var(--primary);">Đặt hàng</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-truck-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700; color: var(--primary);">Đang giao</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: #eee; color: #999; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;">3</div>
+                            <div style="font-size: 12px; color: #999;">Đã nhận</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('product-modal')"><i class="ri-close-line"></i></span>
+            <h2 id="modal-title" style="color: var(--primary); margin-bottom: 5px;">Tên sản phẩm</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Sản phẩm chế biến thủ công, chuẩn vị nhà làm.</p>
+            
+            <div style="background: #fff7ed; padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+                <h4 style="margin-bottom: 5px; display: flex; align-items: center; gap: 5px;"><i class="ri-leaf-fill" style="color: var(--primary)"></i> Nguyên liệu:</h4>
+                <p id="modal-ingredients" style="color: var(--text-main); font-size: 15px; line-height: 1.5;">...</p>
+            </div>
+            
+            <h4 style="margin-bottom: 10px;">Quy cách đóng gói:</h4>
+            <ul id="modal-options" style="margin-left: 20px; color: var(--text-main); margin-bottom: 30px;"></ul>
+            
+            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="closeModal('product-modal')">Đã Hiểu</button>
+        </div>
+    </div>
+
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('cart-modal')"><i class="ri-close-line"></i></span>
+            <h2 class="text-gradient" style="margin-bottom: 20px;">Giỏ Hàng Của Bạn</h2>
+            
+            <div id="cart-items-container" style="max-height: 300px; overflow-y: auto; padding-right: 5px;">
+                </div>
+            
+            <div class="cart-total">
+                <span>Tổng cộng:</span>
+                <span id="cart-total-price" style="color: var(--primary);">0đ</span>
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="alert('Chức năng thanh toán đang được tích hợp!')">Thanh Toán Ngay</button>
+        </div>
+    </div>
+
+    <div class="chat-widget">
+        <div class="chat-toggle" onclick="toggleChat()">
+            <i class="ri-message-3-fill"></i>
+        </div>
+        <div class="chat-box hidden" id="chat-box">
+            <div class="chat-header">
+                <span><i class="ri-customer-service-2-fill"></i> Hỗ trợ DAPY</span>
+                <i class="ri-close-line" style="cursor: pointer; font-size: 20px;" onclick="toggleChat()"></i>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <div class="message msg-bot">Xin chào! Bạn cần tư vấn món nào không ạ? 🌱</div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)">
+                <button class="chat-send" onclick="sendMessage()"><i class="ri-send-plane-fill"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-logo">CHAY FOOD</div>
+            <p style="font-size: 15px; opacity: 0.9; margin-bottom: 30px;">Lan tỏa lối sống xanh và an lành đến mọi nhà.</p>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px;">
+                &copy; 2025 DAPY Team. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. DATABASE SẢN PHẨM
+        const products = [
+            { id: 1, name: "Rong biển cháy tỏi", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, gừng, tỏi, dầu oliu, nước mắm chay." },
+            { id: 2, name: "Rong biển mè rang", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, mè rang, dầu oliu, gia vị chay." },
+            { id: 3, name: "Sườn non rim", cat: "khac", price: 55000, img: "https://images.unsplash.com/photo-1606850780554-b55af83eb729?q=80&w=400", options: ["Túi 70g", "Hộp 110g"], ingredients: "Sườn non chay, ớt bột, đường kính, muối, dầu thực vật, nước mắm chay, sốt ớt rim." },
+            { id: 4, name: "Khô nấm", cat: "nam", price: 65000, img: "https://images.unsplash.com/photo-1555986345-42035eb84478?q=80&w=400", options: ["Túi 100g", "Hộp 160g"], ingredients: "Nấm hương, đường kính, muối, ớt." },
+            { id: 5, name: "Cá cơm giòn", cat: "khac", price: 45000, img: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=400", options: ["Túi 80g", "Hộp 110g"], ingredients: "Hoa chuối, bột chiên giòn, tiêu." },
+            { id: 6, name: "Nấm sốt cay", cat: "nam", price: 40000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm kim châm, sốt ớt rim." },
+            { id: 7, name: "Nấm sốt ngọt", cat: "nam", price: 40000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm, sốt ngọt đặc biệt." },
+            { id: 8, name: "Nấm phô mai", cat: "nam", price: 45000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm, bột phô mai, gia vị." }
+        ];
+
+        // 2. CHUYỂN TRANG
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            
+            // Highlight menu
+            const menus = document.querySelectorAll('.menu-item');
+            if(pageId === 'home') menus[0].classList.add('active');
+            if(pageId === 'products') menus[1].classList.add('active');
+            if(pageId === 'about') menus[2].classList.add('active');
+            if(pageId === 'tracking') menus[3].classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // 3. RENDER SẢN PHẨM
+        function renderProducts(filterCat) {
+            const container = document.getElementById('product-list');
+            container.innerHTML = ''; 
+            const filtered = filterCat === 'all' ? products : products.filter(p => p.cat === filterCat);
+
+            filtered.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="p-img"><img src="${p.img}" alt="${p.name}"></div>
+                        <div class="p-info">
+                            <span class="p-cat">${p.cat === 'rongbien' ? 'Rong Biển' : (p.cat === 'nam' ? 'Nấm' : 'Khác')}</span>
+                            <div class="p-name">${p.name}</div>
+                            <div class="p-price">${p.price.toLocaleString()}đ</div>
+                            <div class="p-actions">
+                                <button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button>
+                                <button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        function filterProducts(cat, btn) {
+            if(btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            renderProducts(cat);
+        }
+
+        // 4. MODALS LOGIC
+        function showDetail(id) {
+            const p = products.find(x => x.id === id);
+            document.getElementById('modal-title').innerText = p.name;
+            document.getElementById('modal-ingredients').innerText = p.ingredients;
+            const ul = document.getElementById('modal-options');
+            ul.innerHTML = '';
+            p.options.forEach(opt => ul.innerHTML += `<li>${opt}</li>`);
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // 5. GIỎ HÀNG LOGIC
+        let cartItems = [];
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existingItem = cartItems.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cartItems.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // Hiệu ứng icon giỏ hàng
+            const cartIcon = document.querySelector('.cart-icon');
+            cartIcon.style.transform = "scale(1.3)";
+            setTimeout(() => cartIcon.style.transform = "scale(1)", 200);
+        }
+
+        function removeFromCart(id) {
+            cartItems = cartItems.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+            let totalPrice = 0;
+
+            if (cartItems.length === 0) {
+                container.innerHTML = '<div class="empty-msg"><i class="ri-shopping-basket-line" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>Giỏ hàng trống trơn!</div>';
+            } else {
+                cartItems.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    totalPrice += itemTotal;
+                    container.innerHTML += `
+                        <div class="cart-item">
+                            <div class="cart-info">
+                                <img src="${item.img}" class="cart-img" alt="${item.name}">
+                                <div class="cart-text">
+                                    <h4>${item.name}</h4>
+                                    <span>${item.price.toLocaleString()}đ x ${item.quantity}</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-danger" onclick="removeFromCart(${item.id})"><i class="ri-delete-bin-line"></i></button>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('cart-total-price').innerText = totalPrice.toLocaleString() + 'đ';
+        }
+
+        function openCart() {
+            updateCartUI();
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        // 6. CHAT BOX LOGIC
+        function toggleChat() {
+            const box = document.getElementById('chat-box');
+            box.classList.toggle('hidden');
+        }
+
+        function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (msg === "") return;
+
+            const chatBody = document.getElementById('chat-body');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message msg-user';
+            userDiv.innerText = msg;
+            chatBody.appendChild(userDiv);
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                const botDiv = document.createElement('div');
+                botDiv.className = 'message msg-bot';
+                botDiv.innerHTML = "Cảm ơn bạn đã nhắn tin. DAPY sẽ phản hồi sớm nhất ạ! ❤️";
+                chatBody.appendChild(botDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+
+        function checkOrder() {
+            const code = document.getElementById('order-id').value;
+            if(code.trim() === "") { alert("Vui lòng nhập mã đơn hàng!"); return; }
+            document.getElementById('result-code').innerText = code;
+            document.getElementById('tracking-result').classList.remove('hidden');
+        }
+
+        // START APP
+        renderProducts('all');
+    </script>
+</body>
+</html>
