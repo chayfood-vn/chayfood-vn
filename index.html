@@ -394,10 +394,9 @@
                     <div class="c-icon-box"><i class="ri-phone-fill"></i></div>
                     <div class="c-title">Hotline Đặt Hàng</div>
                     <div class="c-info">
-                        0967.428.022<br>
-                        0981.219.140
+                        0963697836
                     </div>
-                    <a href="tel:0967428022" class="c-btn">Gọi Ngay <i class="ri-arrow-right-line"></i></a>
+                    <a href="tel:0963697836" class="c-btn">Gọi Ngay <i class="ri-arrow-right-line"></i></a>
                 </div>
 
                 <div class="contact-card">
@@ -497,8 +496,8 @@
                 <div class="form-group"><input type="text" id="c-address" placeholder="Địa chỉ nhận hàng"></div>
                 <div class="form-group">
                     <select id="c-method">
-                        <option value="cod"> Thanh toán khi nhận hàng (COD)</option>
-                        <option value="ck"> Chuyển khoản ngân hàng</option>
+                        <option value="cod">💵 Thanh toán khi nhận hàng (COD)</option>
+                        <option value="ck">🏦 Chuyển khoản ngân hàng</option>
                     </select>
                 </div>
                 <div class="cart-total" style="border-top: none; margin-top: 10px; padding-top: 0; font-size: 16px;">
@@ -554,7 +553,11 @@
     </footer>
 
     <script>
-        // 1. DATABASE SẢN PHẨM
+        // --- 1. CẤU HÌNH SHOP (Sửa thông tin của bạn ở đây) ---
+        const SHOP_ZALO = "0963697836"; // Số điện thoại Zalo nhận đơn
+        const SHOP_NAME = "DAPY Food";
+
+        // --- 2. DATABASE SẢN PHẨM ---
         const products = [
             { id: 1, name: "Rong biển cháy tỏi", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, gừng, tỏi, dầu oliu, nước mắm chay." },
             { id: 2, name: "Rong biển mè rang", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, mè rang, dầu oliu, gia vị chay." },
@@ -566,70 +569,16 @@
             { id: 8, name: "Nấm phô mai", cat: "nam", price: 45000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm, bột phô mai, gia vị." }
         ];
 
-        // 2. CHUYỂN TRANG
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById(pageId).classList.remove('hidden');
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            
-            // Highlight menu
-            const menus = document.querySelectorAll('.menu-item');
-            if(pageId === 'home') menus[0].classList.add('active');
-            if(pageId === 'products') menus[1].classList.add('active');
-            if(pageId === 'about') menus[2].classList.add('active');
-            if(pageId === 'tracking') menus[3].classList.add('active');
-            
-            window.scrollTo(0, 0);
-        }
+        // --- 3. QUẢN LÝ GIỎ HÀNG (LocalStorage) ---
+        // Tự động tải giỏ hàng cũ nếu có
+        let cartItems = JSON.parse(localStorage.getItem('myCart')) || [];
+        // Tự động tải danh sách đơn hàng đã đặt
+        let myOrders = JSON.parse(localStorage.getItem('myOrders')) || [];
 
-        // 3. RENDER SẢN PHẨM
-        function renderProducts(filterCat) {
-            const container = document.getElementById('product-list');
-            container.innerHTML = ''; 
-            const filtered = filterCat === 'all' ? products : products.filter(p => p.cat === filterCat);
-
-            filtered.forEach(p => {
-                container.innerHTML += `
-                    <div class="product-card">
-                        <div class="p-img"><img src="${p.img}" alt="${p.name}"></div>
-                        <div class="p-info">
-                            <span class="p-cat">${p.cat === 'rongbien' ? 'Rong Biển' : (p.cat === 'nam' ? 'Nấm' : 'Khác')}</span>
-                            <div class="p-name">${p.name}</div>
-                            <div class="p-price">${p.price.toLocaleString()}đ</div>
-                            <div class="p-actions">
-                                <button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button>
-                                <button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
+        function saveCart() {
+            localStorage.setItem('myCart', JSON.stringify(cartItems));
+            updateCartUI();
         }
-        function filterProducts(cat, btn) {
-            if(btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            }
-            renderProducts(cat);
-        }
-
-        // 4. MODALS LOGIC
-        function showDetail(id) {
-            const p = products.find(x => x.id === id);
-            document.getElementById('modal-title').innerText = p.name;
-            document.getElementById('modal-ingredients').innerText = p.ingredients;
-            const ul = document.getElementById('modal-options');
-            ul.innerHTML = '';
-            p.options.forEach(opt => ul.innerHTML += `<li>${opt}</li>`);
-            document.getElementById('product-modal').classList.remove('hidden');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        // 5. GIỎ HÀNG LOGIC
-        let cartItems = [];
 
         function addToCart(id) {
             const product = products.find(p => p.id === id);
@@ -639,9 +588,9 @@
             } else {
                 cartItems.push({ ...product, quantity: 1 });
             }
-            updateCartUI();
+            saveCart(); // Lưu ngay
             
-            // Hiệu ứng icon giỏ hàng
+            // Hiệu ứng
             const cartIcon = document.querySelector('.cart-icon');
             cartIcon.style.transform = "scale(1.3)";
             setTimeout(() => cartIcon.style.transform = "scale(1)", 200);
@@ -649,7 +598,7 @@
 
         function removeFromCart(id) {
             cartItems = cartItems.filter(item => item.id !== id);
-            updateCartUI();
+            saveCart(); // Lưu ngay
         }
 
         function updateCartUI() {
@@ -680,29 +629,25 @@
                     `;
                 });
             }
-            document.getElementById('cart-total-price').innerText = totalPrice.toLocaleString() + 'đ';
-        }
-
-        function openCart() {
-            updateCartUI();
-            // Luôn reset về view giỏ hàng khi mở lên
-            showCart(); 
-            document.getElementById('cart-modal').classList.remove('hidden');
-        }
-
-        // 6. XỬ LÝ THANH TOÁN (MỚI)
-        function showCheckout() {
-            if(cartItems.length === 0) { 
-                alert("Giỏ hàng đang trống trơn nè! 😢"); 
-                return; 
+            // Format tiền tệ
+            document.getElementById('cart-total-price').innerText = totalPrice.toLocaleString('vi-VN') + 'đ';
+            if(document.getElementById('checkout-total')) {
+                document.getElementById('checkout-total').innerText = totalPrice.toLocaleString('vi-VN') + 'đ';
             }
+        }
+
+        // --- 4. CHỨC NĂNG THANH TOÁN & GỬI ZALO ---
+        function showCheckout() {
+            if(cartItems.length === 0) { alert("Giỏ hàng đang trống!"); return; }
             document.getElementById('cart-view').classList.add('hidden');
             document.getElementById('checkout-view').classList.remove('hidden');
+            // Cập nhật giá sang view thanh toán
             document.getElementById('checkout-total').innerText = document.getElementById('cart-total-price').innerText;
         }
 
         function showCart() {
             document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('success-view').classList.add('hidden');
             document.getElementById('cart-view').classList.remove('hidden');
         }
 
@@ -710,52 +655,176 @@
             const name = document.getElementById('c-name').value.trim();
             const phone = document.getElementById('c-phone').value.trim();
             const addr = document.getElementById('c-address').value.trim();
-            
-            // 1. Kiểm tra nếu chưa điền đủ
-            if(!name || !phone || !addr) { 
-                // Rung nhẹ màn hình hoặc đổi màu viền đỏ để báo lỗi
-                document.getElementById('c-name').style.borderColor = !name ? 'red' : '#fed7aa';
-                document.getElementById('c-phone').style.borderColor = !phone ? 'red' : '#fed7aa';
-                document.getElementById('c-address').style.borderColor = !addr ? 'red' : '#fed7aa';
-                alert("Bạn ơi, điền đủ thông tin để DAPY giao hàng nhé! 🥺"); 
-                return; 
+            const method = document.getElementById('c-method').value;
+
+            if(!name || !phone || !addr) {
+                alert("Vui lòng điền đầy đủ thông tin nhận hàng!");
+                return;
             }
+
+            // A. TẠO MÃ ĐƠN HÀNG NGẪU NHIÊN
+            const orderId = 'DP' + Math.floor(Math.random() * 10000);
             
-            // 2. Nếu điền đủ -> Hiện màn hình thành công
+            // B. TÍNH TỔNG TIỀN
+            const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalStr = totalPrice.toLocaleString('vi-VN') + 'đ';
+
+            // C. LƯU ĐƠN HÀNG VÀO BỘ NHỚ (Để tra cứu)
+            const newOrder = {
+                id: orderId,
+                status: "Đang xử lý",
+                total: totalStr,
+                date: new Date().toLocaleDateString('vi-VN')
+            };
+            myOrders.push(newOrder);
+            localStorage.setItem('myOrders', JSON.stringify(myOrders));
+
+            // D. HIỆN THÔNG BÁO THÀNH CÔNG
             document.getElementById('succ-name').innerText = name;
             document.getElementById('succ-phone').innerText = phone;
-            
-            // Ẩn form, hiện thông báo xanh lá
             document.getElementById('checkout-view').classList.add('hidden');
             document.getElementById('success-view').classList.remove('hidden');
-            
-            // Reset giỏ hàng
+
+            // E. GỬI ĐƠN QUA ZALO (Tạo link chat)
+            let msg = `🔥 ĐƠN HÀNG MỚI (${orderId}) 🔥\n`;
+            msg += `-----------------\n`;
+            msg += `👤 Khách: ${name}\n`;
+            msg += `📞 SĐT: ${phone}\n`;
+            msg += `📍 ĐC: ${addr}\n`;
+            msg += `💳 TT: ${method === 'cod' ? 'Tiền mặt' : 'Chuyển khoản'}\n`;
+            msg += `-----------------\n`;
+            cartItems.forEach(i => {
+                msg += `+ ${i.name} (x${i.quantity}): ${(i.price * i.quantity).toLocaleString()}đ\n`;
+            });
+            msg += `-----------------\n`;
+            msg += `💰 TỔNG CỘNG: ${totalStr}`;
+
+            // Mở Zalo sau 1.5 giây để khách đọc thông báo xong mới chuyển
+            setTimeout(() => {
+                if(confirm("Bạn có muốn gửi chi tiết đơn hàng qua Zalo cho Shop để được ưu tiên xử lý không?")) {
+                    window.open(`https://zalo.me/${SHOP_ZALO}?text=${encodeURIComponent(msg)}`, '_blank');
+                }
+            }, 1500);
+
+            // F. RESET GIỎ HÀNG
             cartItems = [];
-            updateCartUI();
+            saveCart();
             
-            // Xóa trắng form nhập liệu cho lần sau
+            // Clear Form
             document.getElementById('c-name').value = '';
             document.getElementById('c-phone').value = '';
             document.getElementById('c-address').value = '';
+        }
+
+        // --- 5. TRA CỨU ĐƠN HÀNG (Logic thật) ---
+        function checkOrder() {
+            const codeInput = document.getElementById('order-id').value.trim().toUpperCase();
+            const resultBox = document.getElementById('tracking-result');
             
-            // Reset màu viền về bình thường
-            document.getElementById('c-name').style.borderColor = '#fed7aa';
-            document.getElementById('c-phone').style.borderColor = '#fed7aa';
-            document.getElementById('c-address').style.borderColor = '#fed7aa';
-        }
-        // 7. CHAT BOX LOGIC
-        function toggleChat() {
-            const box = document.getElementById('chat-box');
-            box.classList.toggle('hidden');
+            if(codeInput === "") { alert("Nhập mã đơn đi bạn ơi!"); return; }
+
+            // Tìm trong danh sách đơn hàng đã lưu
+            const foundOrder = myOrders.find(o => o.id === codeInput);
+            const demoOrder = (codeInput === 'DAPY123'); // Mã demo lúc nào cũng đúng
+
+            if(foundOrder || demoOrder) {
+                // Nếu tìm thấy
+                document.getElementById('result-code').innerText = codeInput;
+                // Hiển thị trạng thái (Fake trạng thái dựa trên thời gian thực tế nếu muốn phức tạp hơn)
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = `
+                    <h3 style="margin-bottom: 10px;">Đơn hàng: <span style="color: var(--primary)">${codeInput}</span></h3>
+                    <p>Trạng thái: <strong>${demoOrder ? 'Đang giao hàng' : foundOrder.status}</strong></p>
+                    <p style="font-size: 13px; color: #666;">Tổng tiền: <b>${demoOrder ? '150.000đ' : foundOrder.total}</b></p>
+                    <div style="margin-top: 30px; display: flex; justify-content: space-between; position: relative;">
+                        <div style="position: absolute; top: 15px; left:0; width: 100%; height: 2px; background: #eee; z-index:0;"></div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-check-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700; color: var(--primary);">Đặt hàng</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-loader-4-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700; color: var(--primary);">Đang xử lý</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: #eee; color: #999; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;">3</div>
+                            <div style="font-size: 12px; color: #999;">Thành công</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Không tìm thấy
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #ef4444;">
+                        <i class="ri-error-warning-line" style="font-size: 30px;"></i>
+                        <p style="margin-top: 10px;">Không tìm thấy đơn hàng <b>${codeInput}</b></p>
+                        <p style="font-size: 13px; color: #666;">Vui lòng kiểm tra lại mã đơn nhé!</p>
+                    </div>
+                `;
+            }
         }
 
+        // --- 6. CÁC HÀM CƠ BẢN KHÁC ---
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            
+            const menus = document.querySelectorAll('.menu-item');
+            if(pageId === 'home') menus[0].classList.add('active');
+            if(pageId === 'products') menus[1].classList.add('active');
+            if(pageId === 'about') menus[2].classList.add('active');
+            if(pageId === 'tracking') menus[3].classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function renderProducts(filterCat) {
+            const container = document.getElementById('product-list');
+            container.innerHTML = ''; 
+            const filtered = filterCat === 'all' ? products : products.filter(p => p.cat === filterCat);
+            filtered.forEach(p => {
+                container.innerHTML += `
+                    <div class="product-card">
+                        <div class="p-img"><img src="${p.img}" alt="${p.name}"></div>
+                        <div class="p-info">
+                            <span class="p-cat">${p.cat === 'rongbien' ? 'Rong Biển' : (p.cat === 'nam' ? 'Nấm' : 'Khác')}</span>
+                            <div class="p-name">${p.name}</div>
+                            <div class="p-price">${p.price.toLocaleString()}đ</div>
+                            <div class="p-actions">
+                                <button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button>
+                                <button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        function filterProducts(cat, btn) {
+            if(btn) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            renderProducts(cat);
+        }
+
+        function showDetail(id) {
+            const p = products.find(x => x.id === id);
+            document.getElementById('modal-title').innerText = p.name;
+            document.getElementById('modal-ingredients').innerText = p.ingredients;
+            const ul = document.getElementById('modal-options');
+            ul.innerHTML = '';
+            p.options.forEach(opt => ul.innerHTML += `<li>${opt}</li>`);
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+        function closeModal(modalId) { document.getElementById(modalId).classList.add('hidden'); }
+        function openCart() { updateCartUI(); showCart(); document.getElementById('cart-modal').classList.remove('hidden'); }
+        function toggleChat() { document.getElementById('chat-box').classList.toggle('hidden'); }
         function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
-
         function sendMessage() {
             const input = document.getElementById('chat-input');
             const msg = input.value.trim();
             if (msg === "") return;
-
             const chatBody = document.getElementById('chat-body');
             const userDiv = document.createElement('div');
             userDiv.className = 'message msg-user';
@@ -763,7 +832,6 @@
             chatBody.appendChild(userDiv);
             input.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
-
             setTimeout(() => {
                 const botDiv = document.createElement('div');
                 botDiv.className = 'message msg-bot';
@@ -773,16 +841,9 @@
             }, 1000);
         }
 
-        function checkOrder() {
-            const code = document.getElementById('order-id').value;
-            if(code.trim() === "") { alert("Vui lòng nhập mã đơn hàng!"); return; }
-            document.getElementById('result-code').innerText = code;
-            document.getElementById('tracking-result').classList.remove('hidden');
-        }
-
-        // START APP
+        // --- START APP ---
         renderProducts('all');
+        updateCartUI(); // Load giỏ hàng từ bộ nhớ khi mở web
     </script>
 </body>
 </html>
-
