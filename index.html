@@ -391,15 +391,14 @@
 
     <div class="chat-widget"><div class="chat-toggle" onclick="toggleChat()"><i class="ri-message-3-fill"></i></div><div class="chat-box hidden" id="chat-box"><div class="chat-header"><span><i class="ri-customer-service-2-fill"></i> Hỗ trợ DAPY</span><i class="ri-close-line" style="cursor: pointer; font-size: 20px;" onclick="toggleChat()"></i></div><div class="chat-body" id="chat-body"><div class="message msg-bot">Xin chào! Bạn cần tư vấn món nào không ạ? 🌱</div></div><div class="chat-footer"><input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)"><button class="chat-send" onclick="sendMessage()"><i class="ri-send-plane-fill"></i></button></div></div></div>
 
-    <footer><div class="container"><div class="footer-logo">CHAY FOOD</div><p style="font-size: 15px; opacity: 0.9; margin-bottom: 30px;">Lan tỏa lối sống xanh và an lành đến mọi nhà.</p><div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px;">&copy; 2025 DAPY Team. All rights reserved.</div></div></footer>
+    <footer><div class="container"><div class="footer-logo">CHAY FOOD</div><p style="font-size: 15px; opacity: 0.9; margin-bottom: 30px;">Lan tỏa lối sống xanh và an lành đến mọi nhà.</p><div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px;">© 2025 DAPY Team. All rights reserved.</div></div></footer>
 
     <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
 
     <script>
         // --- 1. CẤU HÌNH ---
         // QUAN TRỌNG: Dán link Google App Script của bạn vào đây để lưu đơn hàng
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw3eNvvB6xikzdZMuKp4XoK3mupRH-nGSObAvWdaJEsOcjd_ViUl7gZHNwAWw4-e78o/exec"; 
-        const SHOP_ZALO = "0967428022"; 
+        const GOOGLE_SCRIPT_URL = "DÁN_LINK_APP_SCRIPT_CỦA_BẠN_VÀO_ĐÂY"; 
 
         // 2. DỮ LIỆU SẢN PHẨM (Thêm rating)
         const products = [
@@ -419,6 +418,26 @@
         let currentDiscount = 0; 
 
         function saveCart() { localStorage.setItem('myCart', JSON.stringify(cartItems)); updateCartUI(); }
+
+        // --- HÀM TÍNH TRẠNG THÁI TỰ ĐỘNG ---
+        // Logic: 
+        // - Dưới 2 phút: Đang xử lý
+        // - Từ 2 - 5 phút: Đang giao hàng
+        // - Trên 5 phút: Hoàn thành
+        function getOrderStatus(timestamp) {
+            if(!timestamp) return { text: "Hoàn thành", color: "#22c55e", step: 3 }; // Đơn cũ coi như xong
+            
+            const now = new Date().getTime();
+            const diffMinutes = (now - timestamp) / 1000 / 60; // Tính ra phút
+
+            if (diffMinutes < 2) {
+                return { text: "Đang xử lý", color: "#f97316", step: 1 }; // Màu Cam
+            } else if (diffMinutes < 5) {
+                return { text: "Đang giao hàng", color: "#3b82f6", step: 2 }; // Màu Xanh Dương
+            } else {
+                return { text: "Hoàn thành", color: "#22c55e", step: 3 }; // Màu Xanh Lá
+            }
+        }
 
         // 4. LOGIC GIỎ HÀNG & MÃ GIẢM GIÁ
         function addToCart(id) {
@@ -515,25 +534,32 @@
             const totalStr = finalTotal.toLocaleString('vi-VN') + 'đ';
             const itemsStr = cartItems.map(i => `${i.name} (${i.quantity})`).join(', ');
 
-            // Zalo message backup
-            let msg = `🔥 ĐƠN HÀNG MỚI (${orderId}) 🔥\n👤 Khách: ${name}\n📞 SĐT: ${phone}\n📍 ĐC: ${addr}\n📦 Món: ${itemsStr}\n💰 TỔNG: ${totalStr}`;
-            
+            // Dữ liệu gửi đi
             const formData = new FormData();
             formData.append("OrderId", orderId); formData.append("Name", name); formData.append("Phone", phone);
             formData.append("Address", addr); formData.append("Items", itemsStr); formData.append("Total", totalStr); formData.append("Status", "Mới");
 
             // Xử lý gửi
             if(GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
-                 setTimeout(() => { finishOrder(orderId, totalStr, msg); }, 1000);
+                 setTimeout(() => { finishOrder(orderId, totalStr); }, 1000);
             } else {
                 fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors'})
-                .then(() => { finishOrder(orderId, totalStr, msg); })
-                .catch(err => { finishOrder(orderId, totalStr, msg); });
+                .then(() => { finishOrder(orderId, totalStr); })
+                .catch(err => { finishOrder(orderId, totalStr); });
             }
 
-            function finishOrder(id, total, zaloMsg) {
-                const newOrder = { id: id, status: "Đang xử lý", total: total, date: new Date().toLocaleDateString('vi-VN') };
-                myOrders.push(newOrder); localStorage.setItem('myOrders', JSON.stringify(myOrders)); renderHistory();
+            function finishOrder(id, total) {
+                // LƯU THÊM TIMESTAMP ĐỂ TÍNH GIỜ
+                const newOrder = { 
+                    id: id, 
+                    total: total, 
+                    date: new Date().toLocaleDateString('vi-VN'),
+                    timestamp: new Date().getTime() // Lưu giờ đặt
+                };
+                myOrders.push(newOrder); 
+                localStorage.setItem('myOrders', JSON.stringify(myOrders)); 
+                renderHistory();
+
                 document.getElementById('succ-code').innerText = id;
                 document.getElementById('checkout-view').classList.add('hidden');
                 document.getElementById('success-view').classList.remove('hidden');
@@ -541,12 +567,6 @@
                 document.getElementById('c-name').value = ''; document.getElementById('c-phone').value = ''; document.getElementById('c-address').value = '';
                 btn.disabled = false; btnText.innerText = "Xác Nhận"; btnLoad.classList.add('hidden');
                 showToast('Đặt hàng thành công!', 'success');
-                // Hỏi gửi zalo
-                setTimeout(() => {
-                    if(confirm("Gửi đơn qua Zalo cho shop để được giao nhanh hơn?")) {
-                        window.open(`https://zalo.me/${SHOP_ZALO}?text=${encodeURIComponent(zaloMsg)}`, '_blank');
-                    }
-                }, 1000);
             }
         }
 
@@ -559,21 +579,71 @@
             setTimeout(() => { box.style.opacity = '0'; setTimeout(() => box.remove(), 300); }, 3000);
         }
 
-        // 8. CÁC HÀM CŨ
+        // 8. CÁC HÀM CŨ & HELPERS
         function checkOrder() {
             const code = document.getElementById('order-id').value.trim().toUpperCase();
             const resultBox = document.getElementById('tracking-result');
             if(!code) return;
             const order = myOrders.find(o => o.id === code);
+            const demoOrder = (code === 'DAPY123');
+
             resultBox.classList.remove('hidden');
-            if(order) resultBox.innerHTML = `<h3 style="margin-bottom: 10px;">Đơn hàng: <span style="color: var(--primary)">${code}</span></h3><p>Trạng thái: <strong>${order.status}</strong></p><p>Tổng tiền: <b>${order.total}</b></p>`;
-            else resultBox.innerHTML = `<p style="color: red;">Không tìm thấy đơn hàng ${code}</p>`;
+            if(order || demoOrder) {
+                // Lấy trạng thái động dựa trên thời gian
+                const statusInfo = demoOrder ? {text: "Đang giao hàng", color: "#3b82f6", step: 2} : getOrderStatus(order.timestamp);
+                const total = demoOrder ? '150.000đ' : order.total;
+                
+                // Hiển thị thanh tiến trình
+                let step1Color = statusInfo.step >= 1 ? 'var(--primary)' : '#eee';
+                let step2Color = statusInfo.step >= 2 ? 'var(--primary)' : '#eee';
+                let step3Color = statusInfo.step >= 3 ? '#22c55e' : '#eee';
+
+                resultBox.innerHTML = `
+                    <h3 style="margin-bottom: 10px;">Đơn hàng: <span style="color: var(--primary)">${code}</span></h3>
+                    <p>Trạng thái: <strong style="color: ${statusInfo.color}">${statusInfo.text}</strong></p>
+                    <p style="font-size: 13px; color: #666;">Tổng tiền: <b>${total}</b></p>
+                    <div style="margin-top: 30px; display: flex; justify-content: space-between; position: relative;">
+                        <div style="position: absolute; top: 15px; left:0; width: 100%; height: 2px; background: #eee; z-index:0;"></div>
+                        
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: ${step1Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-check-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700;">Đặt hàng</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: ${step2Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-truck-line"></i></div>
+                            <div style="font-size: 12px; font-weight: 700;">Đang giao</div>
+                        </div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;">
+                            <div style="width: 30px; height: 30px; background: ${step3Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-home-smile-line"></i></div>
+                            <div style="font-size: 12px;">Hoàn thành</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `<p style="color: red;">Không tìm thấy đơn hàng ${code}</p>`;
+            }
         }
+
+        // Cập nhật danh sách bên dưới cho đẹp & đúng màu
         function renderHistory() {
             const list = document.getElementById('order-history-list'); if(!list) return; list.innerHTML = '';
             if(myOrders.length === 0) { list.innerHTML = '<p style="color:#999; font-size:13px;">Chưa có đơn hàng nào.</p>'; return; }
-            [...myOrders].reverse().forEach(o => { list.innerHTML += `<div style="background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:10px; font-size:13px; display:flex; justify-content:space-between;"><div><b>${o.id}</b> (${o.date})</div><div style="color:var(--primary); font-weight:bold;">${o.status}</div></div>`; });
+            
+            [...myOrders].reverse().forEach(o => { 
+                const statusInfo = getOrderStatus(o.timestamp);
+                list.innerHTML += `
+                    <div style="background:#fff; padding:15px; border-radius:16px; margin-bottom:12px; font-size:14px; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f3f4f6;">
+                        <div>
+                            <b style="color: var(--text-main); font-size: 15px;">${o.id}</b> 
+                            <div style="font-size: 12px; color: #999; margin-top: 2px;">${o.date}</div>
+                        </div>
+                        <div style="color: ${statusInfo.color}; font-weight: 700; font-size: 13px; background: ${statusInfo.color}15; padding: 5px 12px; border-radius: 20px;">
+                            ${statusInfo.text}
+                        </div>
+                    </div>`; 
+            }); 
         }
+
         function showCheckout() { if(cartItems.length===0) {showToast("Giỏ hàng đang trống!", "error"); return;} document.getElementById('cart-view').classList.add('hidden'); document.getElementById('checkout-view').classList.remove('hidden'); updateCartUI(); }
         function showCart() { document.getElementById('checkout-view').classList.add('hidden'); document.getElementById('success-view').classList.add('hidden'); document.getElementById('cart-view').classList.remove('hidden'); }
         function switchPage(pageId) { document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active')); const menus = document.querySelectorAll('.menu-item'); if(pageId==='home') menus[0].classList.add('active'); if(pageId==='products') menus[1].classList.add('active'); if(pageId==='about') menus[2].classList.add('active'); if(pageId==='tracking') menus[3].classList.add('active'); window.scrollTo(0,0); if(pageId==='tracking') renderHistory(); }
@@ -596,4 +666,3 @@
     </script>
 </body>
 </html>
-
