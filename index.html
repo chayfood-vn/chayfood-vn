@@ -4,12 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chay Food - Tinh Hoa Ẩm Thực Chay</title>
-    <link rel="icon" type="image/png" href="logo.png">
     
-    <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
-
-    <link rel="apple-touch-icon" href="logo.png">
-    </head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -64,9 +59,44 @@
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
         .product-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; border: 1px solid #fff1f2; }
         .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: #fed7aa; }
-        .p-img { height: 220px; background: #fff7ed; overflow: hidden; position: relative; }
-        .p-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .product-card:hover .p-img img { transform: scale(1.1); }
+        /* CHUYỂN ẢNH */
+.img-wrapper { 
+    position: relative; 
+    height: 220px; 
+    width: 100%; 
+    overflow: hidden; 
+}
+
+.slider-btn { 
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    border: none; 
+    background: rgba(255,255,255,0.9); 
+    color: #f97316; /* Màu cam chủ đạo */
+    font-size: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    opacity: 0; /* Mặc định ẩn */
+    transition: 0.3s; 
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.product-card:hover .slider-btn { 
+    opacity: 1; /* Di chuột vào thì hiện nút */
+} 
+
+.btn-prev { left: 10px; }
+.btn-next { right: 10px; }
+
+/* Ẩn thanh cuộn */
+.p-img-slider::-webkit-scrollbar { display: none; }
         .p-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
         .p-cat { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 5px; }
         .p-name { font-weight: 700; font-size: 18px; margin-bottom: 10px; color: var(--text-main); }
@@ -145,7 +175,7 @@
         footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
         .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 10px; display: inline-block; color: white; }
 
-        /* === BỔ SUNG STYLE CHO TÍNH NĂNG MỚI === */
+        /*  TÍNH NĂNG MỚI */
         /* Tìm kiếm */
         .search-wrapper { position: relative; max-width: 500px; margin: 0 auto 30px; }
         .search-input { width: 100%; padding: 12px 45px 12px 20px; border-radius: 50px; border: 2px solid #fed7aa; outline: none; font-family: inherit; transition: 0.3s; }
@@ -226,7 +256,7 @@
             <section class="hero">
                 <div class="hero-text">
                     <div class="badge-top">⚡ 100% Chay - 100% Tự Nhiên</div>
-                    <h1>Đồ Ăn Vặt <br><span class="text-gradient">Thuần Chay<br></span> Trọn Vị</h1>
+                    <h1>Đồ Ăn Vặt <br><span class="text-gradient">Thuần Chay</span> Trọn Vị</h1>
                     <p>CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại. Cam kết mỗi sản phẩm đều chứa đựng tinh túy của thiên nhiên, mang lại sức khỏe vàng cho bạn.</p>
                     <div class="hero-btns">
                         <button class="btn btn-primary" onclick="switchPage('products')">Mua Ngay <i class="ri-arrow-right-line"></i></button>
@@ -366,8 +396,8 @@
                 <div class="form-group"><input type="text" id="c-address" placeholder="Địa chỉ nhận hàng"></div>
                 <div class="form-group">
                     <select id="c-method">
-                        <option value="cod">💵 Thanh toán khi nhận hàng (COD)</option>
-                        <option value="ck">🏦 Chuyển khoản ngân hàng</option>
+                        <option value="cod"> Thanh toán khi nhận hàng (COD)</option>
+                        <option value="ck"> Chuyển khoản ngân hàng</option>
                     </select>
                 </div>
                 
@@ -402,27 +432,35 @@
 
     <script>
         // --- 1. CẤU HÌNH ---
-    
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyN92SiHPM7ocf99VG9D8486YSpI2Lk792wRU9tmd2VmUh_NeZwAF7jioZckCu-tIKG/exec"; 
 
-        // 2. DỮ LIỆU SẢN PHẨM (Thêm rating)
+     // 2. DỮ LIỆU SẢN PHẨM 
+        // 1. Dữ liệu sản phẩm 
         const products = [
-            { id: 1, name: "Rong biển cháy tỏi", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, gừng, tỏi, dầu oliu, nước mắm chay.", rating: 5 },
-            { id: 2, name: "Rong biển mè rang", cat: "rongbien", price: 35000, img: "https://images.unsplash.com/photo-1623969562916-43b904944883?q=80&w=400", options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, mè rang, dầu oliu, gia vị chay.", rating: 4.5 },
-            { id: 3, name: "Sườn non rim", cat: "khac", price: 55000, img: "https://images.unsplash.com/photo-1606850780554-b55af83eb729?q=80&w=400", options: ["Túi 70g", "Hộp 110g"], ingredients: "Sườn non chay, ớt bột, đường kính, muối, dầu thực vật, nước mắm chay, sốt ớt rim.", rating: 5 },
-            { id: 4, name: "Khô nấm", cat: "nam", price: 65000, img: "https://images.unsplash.com/photo-1555986345-42035eb84478?q=80&w=400", options: ["Túi 100g", "Hộp 160g"], ingredients: "Nấm hương, đường kính, muối, ớt.", rating: 5 },
-            { id: 5, name: "Cá cơm giòn", cat: "khac", price: 45000, img: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=400", options: ["Túi 80g", "Hộp 110g"], ingredients: "Hoa chuối, bột chiên giòn, tiêu.", rating: 4 },
-            { id: 6, name: "Nấm sốt cay", cat: "nam", price: 40000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm kim châm, sốt ớt rim.", rating: 5 },
-            { id: 7, name: "Nấm sốt ngọt", cat: "nam", price: 40000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm, sốt ngọt đặc biệt.", rating: 4.5 },
-            { id: 8, name: "Nấm phô mai", cat: "nam", price: 45000, img: "https://images.unsplash.com/photo-1625944230945-1b7dd3b94995?q=80&w=400", options: ["Túi", "Hộp"], ingredients: "Nấm, bột phô mai, gia vị.", rating: 5 }
+            { id: 1, name: "Rong biển cháy tỏi", cat: "rongbien", price: 35000, images: ["rongbienchaytoi.png", "rongbien.png"], options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, gừng, tỏi, dầu oliu.", rating: 5 },
+            { id: 2,  name: "Rong biển mè rang", cat: "rongbien", price: 35000, images: ["rongbienmerang.png", "rongbienmegiang.png"], options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, mè rang.", rating: 4.5},
+            { id: 3, name: "Sườn non rim", cat: "khac", price: 55000, images: ["suonnonrim.png", "suonnon.png"], options: ["Túi 70g", "Hộp 110g"],  ingredients: "Sườn non chay, ớt bột.", rating: 5},
+            { id: 4, name: "Khô nấm", cat: "nam", price: 65000, images: ["khonamchau.png", "namchay2.png"], options: ["Túi 100g", "Hộp 160g"], ingredients: "Nấm hương, muối, ớt.", rating: 5 },
+            { id: 5, name: "Cá cơm giòn", cat: "khac", price: 45000, images: ["cacomgion.png", "cacomgiongion.png"], options: ["Túi 80g", "Hộp 110g"], ingredients: "Hoa chuối, bột chiên giòn.", rating: 4 },
+            { id: 6, name: "Nấm phô mai",  cat: "nam", price: 45000, images: ["namgionphomai.png", "namgion.png"], options: ["Túi", "Hộp"],  ingredients: "Nấm, bột phô mai.", rating: 5 }
         ];
 
-        // 3. QUẢN LÝ LOCAL STORAGE
         let cartItems = JSON.parse(localStorage.getItem('myCart')) || [];
         let myOrders = JSON.parse(localStorage.getItem('myOrders')) || [];
-        let currentDiscount = 0; 
+        let currentDiscount = 0;
+ 
 
         function saveCart() { localStorage.setItem('myCart', JSON.stringify(cartItems)); updateCartUI(); }
+        
+        window.scrollImage = function(btn, direction) {
+    //Khung chứa ảnh của sản phẩm 
+    const wrapper = btn.parentElement; 
+    const slider = wrapper.querySelector('.p-img-slider');
+    
+    //Khoảng cách cần trượt 
+    const scrollAmount = slider.clientWidth; 
+    slider.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+}
 
         // --- HÀM TÍNH TRẠNG THÁI TỰ ĐỘNG ---
         // Logic: 
@@ -629,35 +667,84 @@
             }
         }
 
-        // Cập nhật danh sách bên dưới cho đẹp & đúng màu
-        function renderHistory() {
-            const list = document.getElementById('order-history-list'); if(!list) return; list.innerHTML = '';
-            if(myOrders.length === 0) { list.innerHTML = '<p style="color:#999; font-size:13px;">Chưa có đơn hàng nào.</p>'; return; }
-            
-            [...myOrders].reverse().forEach(o => { 
-                const statusInfo = getOrderStatus(o.timestamp);
-                list.innerHTML += `
-                    <div style="background:#fff; padding:15px; border-radius:16px; margin-bottom:12px; font-size:14px; display:flex; justify-content:space-between; align-items:center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #f3f4f6;">
-                        <div>
-                            <b style="color: var(--text-main); font-size: 15px;">${o.id}</b> 
-                            <div style="font-size: 12px; color: #999; margin-top: 2px;">${o.date}</div>
-                        </div>
-                        <div style="color: ${statusInfo.color}; font-weight: 700; font-size: 13px; background: ${statusInfo.color}15; padding: 5px 12px; border-radius: 20px;">
-                            ${statusInfo.text}
-                        </div>
-                    </div>`; 
-            }); 
+        // Cập nhật danh sách 
+       function saveCart() { localStorage.setItem('myCart', JSON.stringify(cartItems)); updateCartUI(); }
+        
+        function getOrderStatus(timestamp) {
+            if(!timestamp) return { text: "Hoàn thành", color: "#22c55e", step: 3 }; 
+            const now = new Date().getTime();
+            const diffMinutes = (now - timestamp) / 1000 / 60;
+            if (diffMinutes < 2) return { text: "Đang xử lý", color: "#f97316", step: 1 };
+            else if (diffMinutes < 5) return { text: "Đang giao hàng", color: "#3b82f6", step: 2 };
+            else return { text: "Hoàn thành", color: "#22c55e", step: 3 };
         }
 
-        function showCheckout() { if(cartItems.length===0) {showToast("Giỏ hàng đang trống!", "error"); return;} document.getElementById('cart-view').classList.add('hidden'); document.getElementById('checkout-view').classList.remove('hidden'); updateCartUI(); }
-        function showCart() { document.getElementById('checkout-view').classList.add('hidden'); document.getElementById('success-view').classList.add('hidden'); document.getElementById('cart-view').classList.remove('hidden'); }
-        function switchPage(pageId) { document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active')); const menus = document.querySelectorAll('.menu-item'); if(pageId==='home') menus[0].classList.add('active'); if(pageId==='products') menus[1].classList.add('active'); if(pageId==='about') menus[2].classList.add('active'); if(pageId==='tracking') menus[3].classList.add('active'); window.scrollTo(0,0); if(pageId==='tracking') renderHistory(); }
-        function renderProducts(filterCat) { const container = document.getElementById('product-list'); container.innerHTML = ''; const filtered = filterCat==='all'?products:products.filter(p=>p.cat===filterCat); 
-            filtered.forEach(p=>{ 
-                let stars = ''; for(let i=0; i<Math.floor(p.rating); i++) stars += '<i class="ri-star-fill"></i>'; if(p.rating % 1 !== 0) stars += '<i class="ri-star-half-fill"></i>';
-                container.innerHTML += `<div class="product-card"><div class="p-img"><img src="${p.img}" alt="${p.name}"></div><div class="p-info"><span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span><div class="p-name">${p.name}</div><div class="star-rating">${stars}</div><div class="p-price">${p.price.toLocaleString()}đ</div><div class="p-actions"><button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button><button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button></div></div></div>`; 
-            }); 
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            const menus = document.querySelectorAll('.menu-item');
+            if(pageId === 'home') menus[0].classList.add('active');
+            if(pageId === 'products') menus[1].classList.add('active');
+            if(pageId === 'about') menus[2].classList.add('active');
+            if(pageId === 'tracking') menus[3].classList.add('active');
+            window.scrollTo(0, 0);
+            if(pageId === 'tracking') renderHistory();
         }
+
+       function renderProducts(filterCat) {
+    const container = document.getElementById('product-list');
+    container.innerHTML = ''; 
+    
+    // Lọc sản phẩm
+    const filtered = filterCat === 'all' ? products : products.filter(p => p.cat === filterCat);
+    
+    if(filtered.length === 0) { 
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999;">Không tìm thấy sản phẩm nào :(</div>'; 
+        return; 
+    }
+
+    filtered.forEach(p => {
+        // Xử lý sao
+        let stars = ''; 
+        for(let i=0; i<Math.floor(p.rating); i++) stars += '<i class="ri-star-fill"></i>'; 
+        if(p.rating % 1 !== 0) stars += '<i class="ri-star-half-fill"></i>';
+
+        // Xử lý danh sách ảnh
+        const imageArray = p.images && p.images.length > 0 ? p.images : (p.img ? [p.img] : ["logo.png"]);
+        
+        // Tạo HTML cho các ảnh
+        const imagesHTML = imageArray.map(src => `<img src="${src}" alt="${p.name}" loading="lazy" style="flex:0 0 100%; width:100%; height:100%; object-fit:cover; scroll-snap-align:start;">`).join('');
+        
+        //Hiện nút mũi tên nếu sản phẩm có nhiều hơn 1 ảnh
+        const buttonsHTML = imageArray.length > 1 ? `
+            <button class="slider-btn btn-prev" onclick="scrollImage(this, -1)"><i class="ri-arrow-left-s-line"></i></button>
+            <button class="slider-btn btn-next" onclick="scrollImage(this, 1)"><i class="ri-arrow-right-s-line"></i></button>
+        ` : '';
+
+        // Xuất HTML ra màn hình
+        container.innerHTML += `
+            <div class="product-card">
+                <div class="img-wrapper">
+                    <div class="p-img-slider" style="display:flex; overflow-x:auto; scroll-snap-type:x mandatory; height:100%; width:100%;">
+                        ${imagesHTML}
+                    </div>
+                    ${buttonsHTML} </div>
+                
+                <div class="p-info">
+                    <span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span>
+                    <div class="p-name">${p.name}</div>
+                    <div class="star-rating">${stars}</div>
+                    <div class="p-price">${p.price.toLocaleString()}đ</div>
+                    <div class="p-actions">
+                        <button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button>
+                        <button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button>
+                    </div>
+                </div>
+            </div>`;
+    });
+}
+        
         function filterProducts(cat, btn) { if(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');} renderProducts(cat); }
         function showDetail(id) { const p = products.find(x=>x.id===id); document.getElementById('modal-title').innerText=p.name; document.getElementById('modal-ingredients').innerText=p.ingredients; const ul=document.getElementById('modal-options'); ul.innerHTML=''; p.options.forEach(opt=>ul.innerHTML+=`<li>${opt}</li>`); document.getElementById('product-modal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
@@ -665,16 +752,159 @@
         function toggleChat() { document.getElementById('chat-box').classList.toggle('hidden'); }
         function handleEnter(e) { if(e.key==='Enter') sendMessage(); }
         function sendMessage() { const i=document.getElementById('chat-input'); if(i.value.trim()==='') return; const b=document.getElementById('chat-body'); b.innerHTML+=`<div class="message msg-user">${i.value}</div>`; i.value=''; b.scrollTop=b.scrollHeight; setTimeout(()=>{ b.innerHTML+=`<div class="message msg-bot">Cảm ơn bạn! DAPY sẽ trả lời ngay ❤️</div>`; b.scrollTop=b.scrollHeight; },1000); }
+        
+        function addToCart(id) { const p = products.find(i=>i.id===id); const exists = cartItems.find(i=>i.id===id); if(exists) exists.quantity++; else cartItems.push({...p, quantity:1}); saveCart(); showToast(`Đã thêm ${p.name} vào giỏ`, 'success'); }
+        function removeFromCart(id) { cartItems = cartItems.filter(i=>i.id!==id); saveCart(); }
+        
+        function updateCartUI() {
+            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+            let totalPrice = 0;
+            if (cartItems.length === 0) container.innerHTML = '<div class="empty-msg"><i class="ri-shopping-basket-line" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>Giỏ hàng trống trơn!</div>';
+            else {
+                cartItems.forEach(item => {
+                    totalPrice += item.price * item.quantity;
+                    const imgUrl = item.images ? item.images[0] : item.img;
+                    container.innerHTML += `<div class="cart-item"><div class="cart-info"><img src="${imgUrl}" class="cart-img" alt="${item.name}"><div class="cart-text"><h4>${item.name}</h4><span>${item.price.toLocaleString()}đ x ${item.quantity}</span></div></div><button class="btn btn-danger" onclick="removeFromCart(${item.id})"><i class="ri-delete-bin-line"></i></button></div>`;
+                });
+            }
+            let finalPrice = totalPrice;
+            if (currentDiscount > 0) {
+                let discountVal = totalPrice * currentDiscount;
+                finalPrice = totalPrice - discountVal;
+                document.getElementById('discount-row').classList.remove('hidden');
+                document.getElementById('discount-amount').innerText = `-${discountVal.toLocaleString('vi-VN')}đ`;
+            } else { document.getElementById('discount-row').classList.add('hidden'); }
+            const totalStr = finalPrice.toLocaleString('vi-VN') + 'đ';
+            document.getElementById('cart-total-price').innerText = totalPrice.toLocaleString('vi-VN') + 'đ';
+            if(document.getElementById('checkout-total')) document.getElementById('checkout-total').innerText = totalStr;
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('coupon-code').value.trim().toUpperCase();
+            if(code === 'CHAYFOOD') { currentDiscount = 0.1; showToast('Giảm 10% thành công!', 'success'); }
+            else if (code === 'HELLO') { currentDiscount = 0.05; showToast('Giảm 5% thành công!', 'success'); }
+            else { currentDiscount = 0; showToast('Mã không hợp lệ', 'error'); }
+            updateCartUI();
+        }
+
+        function searchProducts() {
+            const keyword = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('product-list');
+            container.innerHTML = ''; 
+            const filtered = products.filter(p => p.name.toLowerCase().includes(keyword));
+            if(filtered.length === 0) { container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999;">Không tìm thấy sản phẩm nào :(</div>'; return; }
+            filtered.forEach(p => {
+                let stars = ''; for(let i=0; i<Math.floor(p.rating); i++) stars += '<i class="ri-star-fill"></i>'; if(p.rating % 1 !== 0) stars += '<i class="ri-star-half-fill"></i>';
+                const imageArray = p.images ? p.images : [p.img]; 
+                const imagesHTML = imageArray.map(src => `<img src="${src}" alt="${p.name}" loading="lazy">`).join('');
+                container.innerHTML += `<div class="product-card"><div class="p-img-slider">${imagesHTML}</div><div class="p-info"><span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span><div class="p-name">${p.name}</div><div class="star-rating">${stars}</div><div class="p-price">${p.price.toLocaleString()}đ</div><div class="p-actions"><button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button><button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button></div></div></div>`;
+            });
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('c-name').value.trim();
+            const phone = document.getElementById('c-phone').value.trim();
+            const addr = document.getElementById('c-address').value.trim();
+            const email = document.getElementById('c-email').value.trim();
+
+            if(!name || !phone || !addr || !email) { showToast("Vui lòng điền đủ thông tin!", 'error'); return; }
+
+            const btn = document.getElementById('btn-submit-order');
+            const btnText = document.getElementById('btn-text');
+            const btnLoad = document.getElementById('btn-loading');
+            btn.disabled = true; btnText.innerText = "Đang gửi..."; btnLoad.classList.remove('hidden');
+
+            const orderId = 'DP' + Math.floor(Math.random() * 10000);
+            let rawTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let finalTotal = rawTotal;
+            if(currentDiscount > 0) finalTotal = rawTotal - (rawTotal * currentDiscount);
+            const totalStr = finalTotal.toLocaleString('vi-VN') + 'đ';
+            const itemsStr = cartItems.map(i => `${i.name} (${i.quantity})`).join(', ');
+
+            const formData = new FormData();
+            formData.append("OrderId", orderId); formData.append("Name", name); formData.append("Phone", phone);
+            formData.append("Address", addr); formData.append("Items", itemsStr); formData.append("Total", totalStr); formData.append("Status", "Mới");
+            formData.append("Email", email);
+
+            if(GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
+                 setTimeout(() => { finishOrder(orderId, totalStr); }, 1000);
+            } else {
+                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors'})
+                .then(() => { finishOrder(orderId, totalStr); })
+                .catch(err => { finishOrder(orderId, totalStr); });
+            }
+
+            function finishOrder(id, total) {
+                const newOrder = { id: id, total: total, date: new Date().toLocaleDateString('vi-VN'), timestamp: new Date().getTime() };
+                myOrders.push(newOrder); localStorage.setItem('myOrders', JSON.stringify(myOrders)); renderHistory();
+                document.getElementById('succ-code').innerText = id;
+                document.getElementById('checkout-view').classList.add('hidden');
+                document.getElementById('success-view').classList.remove('hidden');
+                cartItems = []; currentDiscount = 0; saveCart();
+                document.getElementById('c-name').value = ''; document.getElementById('c-phone').value = ''; document.getElementById('c-address').value = ''; document.getElementById('c-email').value = '';
+                btn.disabled = false; btnText.innerText = "Xác Nhận"; btnLoad.classList.add('hidden');
+                showToast('Đặt hàng thành công!', 'success');
+            }
+        }
+
+        function showToast(msg, type) {
+            const box = document.createElement('div');
+            box.className = `toast ${type}`;
+            box.innerHTML = `<div class="toast-icon"><i class="${type === 'success' ? 'ri-checkbox-circle-fill' : 'ri-error-warning-fill'}"></i></div><div class="toast-msg">${msg}</div>`;
+            document.getElementById('toast-container').appendChild(box);
+            setTimeout(() => { box.style.opacity = '0'; setTimeout(() => box.remove(), 300); }, 3000);
+        }
+
+        function checkOrder() {
+            const code = document.getElementById('order-id').value.trim().toUpperCase();
+            const resultBox = document.getElementById('tracking-result');
+            if(!code) return;
+            const order = myOrders.find(o => o.id === code);
+            const demoOrder = (code === 'DAPY123');
+            resultBox.classList.remove('hidden');
+            if(order || demoOrder) {
+                const statusInfo = demoOrder ? {text: "Đang giao hàng", color: "#3b82f6", step: 2} : getOrderStatus(order.timestamp);
+                const total = demoOrder ? '150.000đ' : order.total;
+                let step1Color = statusInfo.step >= 1 ? 'var(--primary)' : '#eee';
+                let step2Color = statusInfo.step >= 2 ? 'var(--primary)' : '#eee';
+                let step3Color = statusInfo.step >= 3 ? '#22c55e' : '#eee';
+                resultBox.innerHTML = `
+                    <h3 style="margin-bottom: 10px;">Đơn hàng: <span style="color: var(--primary)">${code}</span></h3>
+                    <p>Trạng thái: <strong style="color: ${statusInfo.color}">${statusInfo.text}</strong></p>
+                    <p style="font-size: 13px; color: #666;">Tổng tiền: <b>${total}</b></p>
+                    <div style="margin-top: 30px; display: flex; justify-content: space-between; position: relative;">
+                        <div style="position: absolute; top: 15px; left:0; width: 100%; height: 2px; background: #eee; z-index:0;"></div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;"><div style="width: 30px; height: 30px; background: ${step1Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-check-line"></i></div><div style="font-size: 12px; font-weight: 700;">Đặt hàng</div></div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;"><div style="width: 30px; height: 30px; background: ${step2Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-truck-line"></i></div><div style="font-size: 12px; font-weight: 700;">Đang giao</div></div>
+                        <div style="position: relative; z-index: 1; text-align: center; width: 33%;"><div style="width: 30px; height: 30px; background: ${step3Color}; color: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;"><i class="ri-home-smile-line"></i></div><div style="font-size: 12px;">Hoàn thành</div></div>
+                    </div>`;
+            } else { resultBox.innerHTML = `<p style="color: red;">Không tìm thấy đơn hàng ${code}</p>`; }
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('order-history-list'); 
+            if(!list) return; 
+            list.innerHTML = '';
+            if(myOrders.length === 0) { list.innerHTML = `<div style="text-align:center; padding:30px; opacity:0.6;"><i class="ri-file-list-3-line" style="font-size: 40px; margin-bottom:10px; display:block;"></i><p>Bạn chưa có đơn hàng nào.</p></div>`; return; }
+            [...myOrders].reverse().forEach(o => { 
+                const statusInfo = getOrderStatus(o.timestamp);
+                let iconStr = '<i class="ri-file-list-3-fill"></i>'; 
+                if(statusInfo.step === 2) iconStr = '<i class="ri-truck-line"></i>';
+                if(statusInfo.step === 3) iconStr = '<i class="ri-check-double-line"></i>';
+                list.innerHTML += `
+                    <div class="history-card">
+                        <div class="h-icon">${iconStr}</div>
+                        <div class="h-info"><div class="h-id">${o.id} <span class="h-price">${o.total}</span></div><div class="h-meta"><i class="ri-time-line" style="font-size:12px;"></i> ${o.date}</div></div>
+                        <div class="h-status" style="color: ${statusInfo.color}; background: ${statusInfo.color}15;">${statusInfo.text}</div>
+                    </div>`; 
+            }); 
+        }
 
         // START
         renderProducts('all'); updateCartUI();
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
