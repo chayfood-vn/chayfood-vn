@@ -6,7 +6,6 @@
     <title>Chay Food - Tinh Hoa Ẩm Thực Chay</title>
     
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
-        /* === 1. THIẾT LẬP THEME GỐC === */
+        /* === 1. THIẾT LẬP THEME === */
         :root { --primary: #f97316; --primary-light: #ffedd5; --gradient-main: linear-gradient(135deg, #f97316 0%, #fbbf24 100%); --bg-body: #fff7ed; --text-main: #431407; --text-light: #78350f; --white: #ffffff; --shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.15); --radius: 20px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Be Vietnam Pro', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; padding-top: 80px; overflow-x: hidden; }
@@ -87,39 +86,37 @@
         .modal-content { background: white; width: 95%; max-width: 550px; padding: 30px; border-radius: 24px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow); }
         .close-modal { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: #9ca3af; transition: 0.3s; }
         
-        .form-group { margin-bottom: 15px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #fed7aa; border-radius: 12px; outline: none; }
+        /* BÁO LỖI */
+        .form-group { margin-bottom: 20px; position: relative; } 
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #fed7aa; border-radius: 12px; outline: none; transition: 0.3s; }
+        .form-group input.input-error { border-color: #ef4444; background-color: #fef2f2; }
+        .error-message { 
+            position: absolute; bottom: -18px; left: 5px; 
+            font-size: 11px; color: #ef4444; font-weight: 600; 
+            display: none; 
+        }
+        .form-group.error .error-message { display: block; }
+
         .coupon-box { display: flex; gap: 10px; margin-bottom: 15px; }
         .coupon-input { flex: 1; text-transform: uppercase; font-weight: bold; }
         .discount-row { display: flex; justify-content: space-between; color: #15803d; font-size: 14px; margin-top: 5px; font-weight: 600; }
 
-        /* === 2. STYLE CHO PHẦN CHỌN OPTION (MỚI) === */
         .option-group { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .option-btn {
-            padding: 8px 16px; border: 1px solid #fed7aa; border-radius: 20px;
-            background: #fff; cursor: pointer; font-size: 14px; color: var(--text-light);
-            transition: 0.3s;
-        }
+        .option-btn { padding: 8px 16px; border: 1px solid #fed7aa; border-radius: 20px; background: #fff; cursor: pointer; font-size: 14px; color: var(--text-light); transition: 0.3s; }
         .option-btn:hover { background: #fff7ed; }
-        .option-btn.active {
-            background: var(--primary); color: white; border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
-        }
+        .option-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); }
 
-        /* 3. GIỎ HÀNG HIỆN ĐẠI */
-        .cart-item-modern { display: flex; align-items: center; gap: 15px; background: #fff; border: 1px solid #f3f4f6; padding: 12px; border-radius: 16px; margin-bottom: 10px; transition: 0.3s; text-align: center; }
+        .cart-item-modern { display: flex; align-items: center; gap: 15px; background: #fff; border: 1px solid #f3f4f6; padding: 12px; border-radius: 16px; margin-bottom: 10px; transition: 0.3s; }
         .cart-item-modern:hover { border-color: #fed7aa; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .cart-img-box { width: 70px; height: 70px; border-radius: 12px; overflow: hidden; background: #f9f9f9; flex-shrink: 0; }
         .cart-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .cart-info-modern { flex: 1; }
-        .cart-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text-main); text-align: center;}
-        /* Style cho phân loại trong giỏ hàng */
+        .cart-info-modern { flex: 1; text-align: left !important; padding-left: 10px; } 
+        .cart-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text-main); }
         .cart-variant { font-size: 12px; color: #64748b; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
-        .cart-price { color: var(--primary); font-weight: 600; font-size: 14px; }
+        .cart-price { color: var(--primary); font-weight: 700; font-size: 15px; }
         .cart-remove-btn { width: 35px; height: 35px; border-radius: 50%; border: none; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
         .cart-remove-btn:hover { background: #ef4444; color: white; }
 
-        /* 4. TRA CỨU ĐƠN HÀNG */
         .tracking-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 30px; text-align: left; border: 1px solid #f3f4f6; }
         .tracking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
         .tracking-id { font-size: 18px; font-weight: 800; color: var(--primary); }
@@ -134,7 +131,6 @@
         .step.completed .step-icon { background: #22c55e; color: white; }
         .step.completed .step-text { color: #22c55e; }
 
-        /* Lịch sử đơn hàng */
         .history-card-modern { background: white; border-radius: 16px; padding: 15px; margin-bottom: 15px; border: 1px solid #f3f4f6; display: flex; align-items: center; gap: 15px; transition: 0.3s; cursor: pointer; }
         .history-card-modern:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: #fed7aa; }
         .h-icon-box { width: 50px; height: 50px; background: #fff7ed; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
@@ -154,13 +150,18 @@
         
         .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
         .chat-toggle { width: 60px; height: 60px; background: var(--gradient-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; cursor: pointer; box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5); transition: 0.3s; }
+        .chat-toggle:hover { transform: scale(1.1); }
         .chat-box { position: absolute; bottom: 80px; right: 0; width: 350px; height: 450px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #fed7aa; transform-origin: bottom right; }
         .chat-header { background: var(--gradient-main); color: white; padding: 15px 20px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
         .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #fff7ed; display: flex; flex-direction: column; gap: 10px; }
         .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 14px; }
         .msg-bot { background: white; align-self: flex-start; } .msg-user { background: var(--primary); color: white; align-self: flex-end; }
-        .chat-footer { padding: 10px; background: white; display: flex; gap: 10px; }
-        .chat-input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #e5e7eb; outline: none; }
+        .chat-footer { padding: 10px; background: white; display: flex; gap: 10px; align-items: center; border-top: 1px solid #f3f4f6; }
+        .chat-input { flex: 1; padding: 10px 15px; border-radius: 25px; border: 1px solid #e5e7eb; outline: none; transition: 0.3s; }
+        .chat-input:focus { border-color: var(--primary); }
+        .chat-send { width: 45px; height: 45px; border-radius: 50%; background: var(--gradient-main); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3); transition: 0.3s; font-size: 20px; padding: 0; }
+        .chat-send:hover { transform: scale(1.1); box-shadow: 0 6px 15px rgba(249, 115, 22, 0.4); }
+        .chat-send i { margin-right: -3px; margin-top: 2px; }
 
         .story-box { background: white; padding: 40px; border-radius: 20px; margin-bottom: 40px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
         .story-box::before { content: '"'; position: absolute; top: 10px; left: 20px; font-size: 100px; color: #fff7ed; font-family: serif; z-index: 0; }
@@ -169,102 +170,36 @@
         .founder-card { text-align: center; padding: 25px; background: white; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.3s; }
         .founder-card:hover { transform: translateY(-5px); }
         .founder-avatar { width: 100px; height: 100px; background: #ddd; border-radius: 50%; margin: 0 auto 15px; object-fit: cover; border: 4px solid #fff7ed; }
-        .services { padding: 80px 0; background: var(--white); text-align: center; }
-        .service-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 8px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; margin-bottom: 20px; }
         .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 50px; color: var(--text-dark); }
+        
+        .services { padding: 80px 0; background: var(--white); text-align: center; overflow: hidden; }
+        .service-badge { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 8px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; margin-bottom: 20px; }
         .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .service-card { background: white; padding: 40px 30px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; }
-        .icon-box { width: 70px; height: 70px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; margin-bottom: 25px; }
-        .footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
-        .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 10px; display: inline-block; color: white; }
+        .service-card { background: white; padding: 40px 30px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.04); display: flex; flex-direction: column; align-items: center; transition: all 0.4s ease; border: 1px solid transparent; position: relative; top: 0; }
+        .service-card:hover { transform: translateY(-15px); border-color: #fed7aa; box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15); }
+        .icon-box { width: 70px; height: 70px; background: var(--primary); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; margin-bottom: 25px; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .service-card:hover .icon-box { transform: scale(1.1) rotate(10deg); background: var(--gradient-main); box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4); }
+
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 50px; }
+        .contact-card { background: white; padding: 35px 20px; border-radius: 24px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.03); border: 1px solid #fff1f2; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .contact-card:hover { transform: translateY(-20px); box-shadow: 0 30px 60px rgba(249, 115, 22, 0.25); border-color: #f97316; }
+        .c-icon-box { width: 70px; height: 70px; background: #fff7ed; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; transition: all 0.5s ease; position: relative; }
+        .contact-card:hover .c-icon-box { background: var(--gradient-main); color: white; animation: pulse-orange 1.5s infinite; }
+        @keyframes pulse-orange { 0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(249, 115, 22, 0); } 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); } }
+        .c-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+        .c-info { color: var(--text-light); font-size: 14px; margin-bottom: 20px; line-height: 1.6; min-height: 45px; }
+        .c-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 20px; border: 2px solid #fed7aa; border-radius: 30px; color: var(--primary); text-decoration: none; font-weight: 700; font-size: 13px; transition: 0.3s; position: relative; overflow: hidden; z-index: 1; }
+        .c-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--primary); transition: 0.3s; z-index: -1; }
+        .c-btn:hover { color: white; border-color: var(--primary); }
+        .c-btn:hover::before { width: 100%; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         footer { background: #431407; color: #fed7aa; padding: 60px 0 30px; text-align: center; margin-top: 80px; }
         .footer-logo { font-size: 28px; font-weight: 900; margin-bottom: 15px; display: inline-block; color: white; text-transform: uppercase;letter-spacing: 1px;}
         footer p {font-size: 14px; opacity: 0.8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;}
         footer .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px; color: #fdba74;}
-        /* === FIX LỖI LIÊN HỆ THẲNG HÀNG & THÊM HIỆU ỨNG === */
-.contact-grid {
-    display: grid;
-    /* Bắt buộc chia làm 3 cột đều nhau */
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 30px;
-    margin-top: 50px;
-}
-
-.contact-card {
-    background: white;
-    padding: 40px 20px;
-    border-radius: 24px;
-    text-align: center;
-    border: 1px solid #fff1f2;
-    /* Hiệu ứng chuyển động mượt */
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Hiệu ứng khi di chuột vào */
-.contact-card:hover {
-    transform: translateY(-15px); /* Bay lên cao hơn */
-    box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2); /* Bóng đổ đậm màu cam */
-    border-color: #fed7aa;
-}
-
-/* Hiệu ứng icon xoay vòng */
-.c-icon-box {
-    width: 80px;
-    height: 80px;
-    background: #fff7ed;
-    color: #f97316;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    margin: 0 auto 20px;
-    transition: 0.5s;
-}
-
-.contact-card:hover .c-icon-box {
-    background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
-    color: white;
-    transform: rotateY(360deg); /* Xoay 1 vòng */
-    box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4);
-}
-
-/* Nút bấm trong card */
-.c-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 15px;
-    padding: 10px 25px;
-    border-radius: 50px;
-    background: white;
-    color: #f97316;
-    border: 2px solid #f97316;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.3s;
-}
-
-.c-btn:hover {
-    background: #f97316;
-    color: white;
-    box-shadow: 0 5px 15px rgba(249, 115, 22, 0.4);
-}
-
-/* Trên điện thoại thì xếp dọc lại cho dễ nhìn */
-@media (max-width: 768px) {
-    .contact-grid {
-        grid-template-columns: 1fr; /* 1 cột duy nhất */
-    }
-}
-        .c-icon-box { width: 70px; height: 70px; background: #fff7ed; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
-        .contact-card:hover .c-icon-box { background: var(--gradient-main); color: white; transform: rotateY(180deg); }
-        .c-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
-        .c-info { color: var(--text-light); font-size: 14px; margin-bottom: 20px; line-height: 1.6; min-height: 45px; }
-        .c-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 20px; border: 2px solid #fed7aa; border-radius: 30px; color: var(--primary); text-decoration: none; font-weight: 700; font-size: 13px; transition: 0.3s; }
-        .c-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         @media (max-width: 768px) {
             header { height: auto; padding: 15px 0; }
@@ -287,6 +222,19 @@
             .modal-content { width: 92%; padding: 20px; }
             #toast-container { right: 50%; transform: translateX(50%); width: 90%; }
         }
+        .payment-label { font-weight: 700; font-size: 14px; margin-bottom: 10px; display: block; color: var(--text-main); }
+.payment-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.payment-card { cursor: pointer; position: relative; -webkit-tap-highlight-color: transparent; }
+.payment-card input { display: none; } /* Ẩn nút radio mặc định xấu xí */
+
+.card-content { border: 2px solid #fed7aa;  border-radius: 16px;  padding: 15px 10px; text-align: center;  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);  background: white; display: flex;  flex-direction: column;  align-items: center;  gap: 8px; color: #9ca3af; height: 100%; }
+
+.p-icon { font-size: 28px; transition: 0.3s; margin-bottom: -5px; }
+.p-text { font-weight: 600; font-size: 13px; }
+
+.payment-card input:checked + .card-content { border-color: var(--primary);  background: #fff7ed; box-shadow: 0 8px 20px rgba(249, 115, 22, 0.25);  color: var(--primary); transform: translateY(-3px); }
+.payment-card input:checked + .card-content .p-icon { color: var(--primary); transform: scale(1.1); }
+.payment-card:hover .card-content { border-color: var(--primary); }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .empty-msg {text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 0;  color: #999;}
     </style>
@@ -320,7 +268,7 @@
                 <div class="hero-text">
                     <div class="badge-top">⚡ 100% Chay - 100% Tự Nhiên</div>
                      <h1>Đồ Ăn Vặt <br><span class="text-gradient">Thuần Chay<br></span> Trọn Vị</h1>
-                    <p>CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại. Cam kết mỗi sản phẩm đều chứa đựng tinh túy của thiên nhiên.</p>
+                    <p>CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại. Cam kết mỗi sản phẩm đều chứa đựng tinh túy của thiên nhiên, mang lại sức khỏe vàng cho bạn.</p>
                     <div class="hero-btns">
                         <button class="btn btn-primary" onclick="switchPage('products')">Mua Ngay <i class="ri-arrow-right-line"></i></button>
                         <button class="btn btn-white" onclick="switchPage('about')">Tìm Hiểu Thêm</button>
@@ -328,20 +276,33 @@
                 </div>
                 <div class="hero-img">
                     <div class="image-card-bg">
-                        <img src="hero-img.jpg" alt="Sản phẩm Chay Food">
+                        <img src="hero-img.jpg" alt="Sản phẩm Chay Food" onerror="this.style.display='none'">
                         <div class="float-badge badge-new" style="--r: 5deg;">✨ Mới Ra Mắt</div>
                         <div class="float-badge badge-organic" style="--r: -5deg;">🌿 100% Organic</div>
                     </div>
                 </div>
             </section>
+            
             <section class="services">
                 <div class="container">
-                    <div class="service-badge">Dịch Vụ Của Chúng Tôi</div>
-                    <h2 class="section-title">Trải Nghiệm <br><span class="text-gradient">Đặt Hàng Hoàn Hảo</span></h2>
+                    <div class="service-badge reveal">Dịch Vụ Của Chúng Tôi</div>
+                    <h2 class="section-title reveal">Trải Nghiệm <br><span class="text-gradient">Đặt Hàng Hoàn Hảo</span></h2>
                     <div class="service-grid">
-                        <div class="service-card"><div class="icon-box"><i class="ri-truck-fill"></i></div><h3>30 Phút Giao Hàng</h3><p>Giao hàng siêu tốc khu vực nội thành. Đảm bảo sản phẩm luôn chất lượng nhất.</p></div>
-                        <div class="service-card"><div class="icon-box"><i class="ri-bank-card-fill"></i></div><h3>Nhiều Phương Thức</h3><p>Thanh toán linh hoạt: COD, MoMo, ZaloPay, VNPay. Tiện lợi và bảo mật.</p></div>
-                        <div class="service-card"><div class="icon-box"><i class="ri-customer-service-2-fill"></i></div><h3>Luôn Sẵn Sàng</h3><p>Đội ngũ DAPY hỗ trợ 24/7. Giải đáp mọi thắc mắc và xử lý đơn hàng tận tâm.</p></div>
+                        <div class="service-card reveal">
+                            <div class="icon-box"><i class="ri-truck-fill"></i></div>
+                            <h3>30 Phút Giao Hàng</h3>
+                            <p>Giao hàng siêu tốc khu vực nội thành. Đảm bảo sản phẩm luôn chất lượng nhất.</p>
+                        </div>
+                        <div class="service-card reveal" style="transition-delay: 0.1s;">
+                            <div class="icon-box"><i class="ri-bank-card-fill"></i></div>
+                            <h3>Nhiều Phương Thức</h3>
+                            <p>Thanh toán linh hoạt: COD, MoMo, ZaloPay, VNPay. Tiện lợi và bảo mật.</p>
+                        </div>
+                        <div class="service-card reveal" style="transition-delay: 0.2s;">
+                            <div class="icon-box"><i class="ri-customer-service-2-fill"></i></div>
+                            <h3>Luôn Sẵn Sàng</h3>
+                            <p>Đội ngũ DAPY hỗ trợ 24/7. Giải đáp mọi thắc mắc và xử lý đơn hàng tận tâm.</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -369,39 +330,50 @@
             <div style="text-align: center; margin-bottom: 40px;">
                 <h2 style="font-size: 2.5rem;">Về <span class="text-gradient">Chay Food</span></h2>
             </div>
-            <div class="story-box">
+            <div class="story-box reveal">
                  <p style="margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8;">
-
                     Ngày nay, khi cuộc sống ngày càng no đủ thì nhu cầu về hạnh phúc ngày càng được chú trọng. Kéo theo đó là nhu cầu về đồ ăn vặt và sức khỏe ngày càng tăng cao. Nhận thấy được điều đó, <strong>nhóm DAPY</strong> đã tạo ra thương hiệu <strong>CHAY FOOD</strong>.
-
                 </p>
-
                 <p style="font-size: 1.1rem; line-height: 1.8;">
-
                     CHAY FOOD là sự kết hợp hài hòa giữa truyền thống và hiện đại, mỗi nguyên liệu đều mang trong mình một sứ mệnh riêng. Chúng tôi cam kết mỗi sản phẩm đều chứa trong nó những tinh túy của thiên nhiên.
-
                 </p>
                 <div style="text-align: center; margin-top: 30px; border-top: 1px dashed #fed7aa; padding-top: 20px;">
                     <strong class="text-gradient" style="font-size: 1.4rem; display: block; text-transform: uppercase;">"DAPY - ĐỒNG HÀNH CÙNG SỨC KHỎE CỦA BẠN"</strong>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 60px;">
-                <h3 class="section-title" style="font-size: 2rem; margin-bottom: 10px;">Đội Ngũ <span class="text-gradient">Sáng Lập</span></h3>
+                <h3 class="section-title reveal" style="font-size: 2rem; margin-bottom: 10px;">Đội Ngũ <span class="text-gradient">Sáng Lập</span></h3>
                 <div class="founder-grid">
-                    <div class="founder-card"><img src="https://ui-avatars.com/api/?name=Phuong+Anh&background=f97316&color=fff&size=128" class="founder-avatar" alt="PA"><h4>Đỗ Thị Phương Anh</h4><p style="color: var(--text-light); font-size: 14px;">Co-Founder</p></div>
-                    <div class="founder-card"><img src="https://ui-avatars.com/api/?name=Duc+Duy&background=fbbf24&color=fff&size=128" class="founder-avatar" alt="DD"><h4>Lê Công Đức Duy</h4><p style="color: var(--text-light); font-size: 14px;">Co-Founder</p></div>
+                    <div class="founder-card reveal"><img src="https://ui-avatars.com/api/?name=Phuong+Anh&background=f97316&color=fff&size=128" class="founder-avatar" alt="PA"><h4>Đỗ Thị Phương Anh</h4><p style="color: var(--text-light); font-size: 14px;">Co-Founder</p></div>
+                    <div class="founder-card reveal" style="transition-delay: 0.1s;"><img src="https://ui-avatars.com/api/?name=Duc+Duy&background=fbbf24&color=fff&size=128" class="founder-avatar" alt="DD"><h4>Lê Công Đức Duy</h4><p style="color: var(--text-light); font-size: 14px;">Co-Founder</p></div>
                 </div>
             </div>
+            
            <div style="text-align: center; margin-top: 60px;">
-                <h3 class="section-title" style="font-size: 2rem; margin-bottom: 10px;">Liên Hệ <span class="text-gradient">DAPY</span></h3>
-                <p style="color: var(--text-light);">Luôn sẵn sàng hỗ trợ bạn 24/7</p>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-card"><div class="c-icon-box"><i class="ri-phone-fill"></i></div><div class="c-title">Hotline Đặt Hàng</div><div class="c-info">0967.428.022<br>0981.219.140</div><a href="tel:0967428022" class="c-btn">Gọi Ngay <i class="ri-arrow-right-line"></i></a></div>
-                <div class="contact-card"><div class="c-icon-box"><i class="ri-mail-send-fill"></i></div><div class="c-title">Email Hỗ Trợ</div><div class="c-info">duylecong60@gmail.com<br>Phản hồi trong 24h</div><a href="mailto:duylecong60@gmail.com" class="c-btn">Gửi Email <i class="ri-arrow-right-line"></i></a></div>
-                <div class="contact-card"><div class="c-icon-box"><i class="ri-map-pin-2-fill"></i></div><div class="c-title">Ghé Thăm Shop</div><div class="c-info">Cây đa quán - xã Khoái Châu<br>Tỉnh Hưng Yên</div><a href="https://www.google.com/maps/search/?api=1&query=Cây+đa+quán+xã+Khoái+Châu+Hưng+Yên" target="_blank" class="c-btn">Xem Bản Đồ <i class="ri-arrow-right-line"></i></a></div>
-            </div>
-        </section>
+                <h3 class="section-title reveal" style="font-size: 2rem; margin-bottom: 10px;">Liên Hệ <span class="text-gradient">DAPY</span></h3>
+                <p style="color: var(--text-light);">Luôn sẵn sàng hỗ trợ bạn 24/7</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card reveal">
+                    <div class="c-icon-box"><i class="ri-phone-fill"></i></div>
+                    <div class="c-title">Hotline Đặt Hàng</div>
+                    <div class="c-info">0967.428.022<br>0981.219.140</div>
+                    <a href="tel:0967428022" class="c-btn">Gọi Ngay <i class="ri-arrow-right-line"></i></a>
+                </div>
+                <div class="contact-card reveal" style="transition-delay: 0.1s;">
+                    <div class="c-icon-box"><i class="ri-mail-send-fill"></i></div>
+                    <div class="c-title">Email Hỗ Trợ</div>
+                    <div class="c-info">duylecong60@gmail.com<br>Phản hồi trong 24h</div>
+                    <a href="mailto:duylecong60@gmail.com" class="c-btn">Gửi Email <i class="ri-arrow-right-line"></i></a>
+                </div>
+                <div class="contact-card reveal" style="transition-delay: 0.2s;">
+                    <div class="c-icon-box"><i class="ri-map-pin-2-fill"></i></div>
+                    <div class="c-title">Ghé Thăm Shop</div>
+                    <div class="c-info">Cây đa quán - xã Khoái Châu<br>Tỉnh Hưng Yên</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Khoái+Châu+Hưng+Yên" target="_blank" class="c-btn">Xem Bản Đồ <i class="ri-arrow-right-line"></i></a>
+                </div>
+            </div>
+        </section>
 
         <section id="tracking" class="page-section hidden">
             <div style="max-width: 700px; margin: 50px auto; text-align: center;">
@@ -459,11 +431,44 @@
                     <input type="text" id="coupon-code" class="coupon-input" placeholder="Mã giảm giá (VD: CHAYFOOD)">
                     <button class="btn btn-primary" style="padding: 10px 15px; font-size: 13px;" onclick="applyCoupon()">Áp Dụng</button>
                 </div>
-                <div class="form-group"><input type="text" id="c-name" placeholder="Họ và tên người nhận"></div>
-                <div class="form-group"><input type="tel" id="c-phone" placeholder="Số điện thoại liên hệ"></div>
-                <div class="form-group"><input type="email" id="c-email" placeholder="Email nhận hóa đơn"></div>
-                <div class="form-group"><input type="text" id="c-address" placeholder="Địa chỉ nhận hàng"></div>
-                <div class="form-group"><select id="c-method"><option value="cod">Thanh toán khi nhận (COD)</option><option value="ck">Chuyển khoản</option></select></div>
+                
+                <div class="form-group" id="group-name">
+                    <input type="text" id="c-name" placeholder="Họ và tên người nhận">
+                    <span class="error-message">Vui lòng nhập họ tên!</span>
+                </div>
+                <div class="form-group" id="group-phone">
+                    <input type="tel" id="c-phone" placeholder="Số điện thoại liên hệ">
+                    <span class="error-message">Số điện thoại không hợp lệ (VD: 0912...)</span>
+                </div>
+                <div class="form-group" id="group-email">
+                    <input type="email" id="c-email" placeholder="Email nhận hóa đơn">
+                    <span class="error-message">Email không đúng định dạng!</span>
+                </div>
+                <div class="form-group" id="group-address">
+                    <input type="text" id="c-address" placeholder="Địa chỉ nhận hàng">
+                    <span class="error-message">Vui lòng nhập địa chỉ!</span>
+                </div>
+                
+                <div class="form-group">
+    <label class="payment-label">Phương thức thanh toán:</label>
+    <div class="payment-options">
+        <label class="payment-card">
+            <input type="radio" name="payment-method" value="cod" checked>
+            <div class="card-content">
+                <div class="p-icon"><i class="ri-hand-coin-line"></i></div>
+                <div class="p-text">Thanh toán khi nhận (COD)</div>
+            </div>
+        </label>
+        
+        <label class="payment-card">
+            <input type="radio" name="payment-method" value="ck">
+            <div class="card-content">
+                <div class="p-icon"><i class="ri-bank-card-2-line"></i></div>
+                <div class="p-text">Chuyển khoản</div>
+            </div>
+        </label>
+    </div>
+</div>
                 
                 <div style="background:#f9f9f9; padding:15px; border-radius:12px; margin-top:15px;">
                     <div id="discount-row" class="hidden" style="display:flex; justify-content:space-between; color:#22c55e; margin-bottom:5px;"><span>Giảm giá:</span><span id="discount-amount">-0đ</span></div>
@@ -489,14 +494,13 @@
 
     <div class="chat-widget"><div class="chat-toggle" onclick="toggleChat()"><i class="ri-message-3-fill"></i></div><div class="chat-box hidden" id="chat-box"><div class="chat-header"><span><i class="ri-customer-service-2-fill"></i> Hỗ trợ DAPY</span><i class="ri-close-line" style="cursor: pointer; font-size: 20px;" onclick="toggleChat()"></i></div><div class="chat-body" id="chat-body"><div class="message msg-bot">Xin chào! Bạn cần tư vấn món nào không ạ? 🌱</div></div><div class="chat-footer"><input type="text" class="chat-input" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="handleEnter(event)"><button class="chat-send" onclick="sendMessage()"><i class="ri-send-plane-fill"></i></button></div></div></div>
 
-    <footer><div class="container"><div class="footer-logo">CHAY FOOD</div><p style="font-size: 15px; opacity: 0.9; margin-bottom: 30px;">Lan tỏa lối sống xanh và an lành đến mọi nhà.</p><div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px;">© 2025 DAPY Team. All rights reserved.</div></div></footer>
+    <footer><div class="container"><div class="footer-logo">CHAY FOOD</div><p style="font-size: 15px; opacity: 0.9; margin-bottom: 30px;">Lan tỏa lối sống xanh và an lành đến mọi nhà.</p><div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 13px;">© 2025 DAPY Team. All rights reserved.</div></div></footer>
 
     <script>
         // --- 1. CẤU HÌNH ---
-        // QUAN TRỌNG: Dán link Google App Script của bạn vào đây
+        // SHEET ĐƠN HÀNG
         const GOOGLE_SCRIPT_URL = "DÁN_LINK_APP_SCRIPT_CỦA_BẠN_VÀO_ĐÂY"; 
 
-        // 2. DỮ LIỆU SẢN PHẨM (DỮ LIỆU CỦA BẠN - ĐÃ UPDATE ẢNH LOCAL)
         const products = [
             { id: 1, name: "Rong biển cháy tỏi", cat: "rongbien", price: 35000, images: ["rongbienchaytoi.png", "rongbien.png"], options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, gừng, tỏi, dầu oliu.", rating: 5 },
             { id: 2, name: "Rong biển mè rang", cat: "rongbien", price: 35000, images: ["rongbienmerang.png", "rongbienmegiang.png"], options: ["Túi 40g", "Hộp 70g"], ingredients: "Rong biển, mè rang.", rating: 4.5 },
@@ -510,7 +514,6 @@
         let myOrders = JSON.parse(localStorage.getItem('myOrders')) || [];
         let currentDiscount = 0; 
 
-        // --- CÁC HÀM XỬ LÝ (ĐẦU BẾP) ---
         function saveCart() { localStorage.setItem('myCart', JSON.stringify(cartItems)); updateCartUI(); }
         
         function getOrderStatus(timestamp) {
@@ -522,7 +525,6 @@
             else return { text: "Hoàn thành", color: "#22c55e", step: 3 };
         }
 
-        // HÀM CUỘN ẢNH (CHO MÁY TÍNH)
         window.scrollImage = function(btn, direction) {
             const wrapper = btn.parentElement; 
             const slider = wrapper.querySelector('.p-img-slider');
@@ -550,58 +552,40 @@
             if(filtered.length === 0) { container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999;">Không tìm thấy sản phẩm nào :(</div>'; return; }
             filtered.forEach(p => {
                 let stars = ''; for(let i=0; i<Math.floor(p.rating); i++) stars += '<i class="ri-star-fill"></i>'; if(p.rating % 1 !== 0) stars += '<i class="ri-star-half-fill"></i>';
-                const imageArray = p.images ? p.images : [p.img]; 
+                const imageArray = (p.images && p.images.length > 0) ? p.images : ['logo.png']; 
                 const imagesHTML = imageArray.map(src => `<img src="${src}" alt="${p.name}" loading="lazy" onerror="this.src='logo.png'">`).join('');
-                
-                // Nút bấm chuyển ảnh
-                const buttonsHTML = imageArray.length > 1 ? `
-                    <button class="slider-btn btn-prev" onclick="scrollImage(this, -1)"><i class="ri-arrow-left-s-line"></i></button>
-                    <button class="slider-btn btn-next" onclick="scrollImage(this, 1)"><i class="ri-arrow-right-s-line"></i></button>
-                ` : '';
-
-                container.innerHTML += `
-                    <div class="product-card">
-                        <div class="img-wrapper">
-                            <div class="p-img-slider">${imagesHTML}</div>
-                            ${buttonsHTML}
-                        </div>
-                        <div class="p-info"><span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span><div class="p-name">${p.name}</div><div class="star-rating">${stars}</div><div class="p-price">${p.price.toLocaleString()}đ</div><div class="p-actions"><button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button><button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button></div></div></div>`;
+                const buttonsHTML = imageArray.length > 1 ? `<button class="slider-btn btn-prev" onclick="scrollImage(this, -1)"><i class="ri-arrow-left-s-line"></i></button><button class="slider-btn btn-next" onclick="scrollImage(this, 1)"><i class="ri-arrow-right-s-line"></i></button>` : '';
+                container.innerHTML += `<div class="product-card"><div class="img-wrapper"><div class="p-img-slider">${imagesHTML}</div>${buttonsHTML}</div><div class="p-info"><span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span><div class="p-name">${p.name}</div><div class="star-rating">${stars}</div><div class="p-price">${p.price.toLocaleString()}đ</div><div class="p-actions"><button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button><button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button></div></div></div>`;
             });
         }
         
         function filterProducts(cat, btn) { if(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');} renderProducts(cat); }
         
-        // --- XỬ LÝ MODAL & OPTION (MỚI) ---
         function showDetail(id) { 
             const p = products.find(x=>x.id===id); 
             document.getElementById('modal-title').innerText = p.name; 
             document.getElementById('modal-ingredients').innerText = p.ingredients; 
             
-            // Tạo nút chọn Option
             const optionsContainer = document.getElementById('modal-options');
             optionsContainer.innerHTML = '';
             p.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
-                btn.className = `option-btn ${index === 0 ? 'active' : ''}`; // Mặc định chọn cái đầu
+                btn.className = `option-btn ${index === 0 ? 'active' : ''}`; 
                 btn.innerText = opt;
                 btn.onclick = function() {
-                    // Xóa active cũ, thêm active mới
                     document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    // Lưu giá trị vào modal dataset
                     document.getElementById('product-modal').dataset.selected = opt;
                 };
                 optionsContainer.appendChild(btn);
             });
 
-            // Lưu ID và Option mặc định vào modal
             const modal = document.getElementById('product-modal');
             modal.dataset.id = id;
             modal.dataset.selected = p.options[0];
             modal.classList.remove('hidden'); 
         }
 
-        // Hàm thêm từ Modal
         function addToCartFromModal() {
             const modal = document.getElementById('product-modal');
             const id = parseInt(modal.dataset.id);
@@ -616,28 +600,18 @@
         function handleEnter(e) { if(e.key==='Enter') sendMessage(); }
         function sendMessage() { const i=document.getElementById('chat-input'); if(i.value.trim()==='') return; const b=document.getElementById('chat-body'); b.innerHTML+=`<div class="message msg-user">${i.value}</div>`; i.value=''; b.scrollTop=b.scrollHeight; setTimeout(()=>{ b.innerHTML+=`<div class="message msg-bot">Cảm ơn bạn! DAPY sẽ trả lời ngay ❤️</div>`; b.scrollTop=b.scrollHeight; },1000); }
         
-        // ADD TO CART CÓ OPTION (SỬA ĐỔI)
         function addToCart(id, selectedOption) { 
             const p = products.find(i=>i.id===id); 
-            // Nếu không có option (bấm nhanh ngoài grid), lấy option đầu tiên
             const option = selectedOption || p.options[0];
-            
-            // Tìm sản phẩm trong giỏ (phải trùng cả ID và Option)
             const exists = cartItems.find(i => i.id === id && i.option === option); 
-            
             if(exists) exists.quantity++; 
-            else cartItems.push({...p, quantity:1, option: option}); // Lưu thêm option
-            
+            else cartItems.push({...p, quantity:1, option: option}); 
             saveCart(); 
             showToast(`Đã thêm ${p.name} (${option})`, 'success'); 
         }
 
-        function removeFromCart(id) { 
-            cartItems = cartItems.filter(i=>i.id!==id); 
-            saveCart(); 
-        }
+        function removeFromCart(id) { cartItems = cartItems.filter(i=>i.id!==id); saveCart(); }
         
-        // UPDATE CART UI HIỆN ĐẠI
         function updateCartUI() {
             const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').innerText = totalCount;
@@ -649,10 +623,10 @@
             else {
                 cartItems.forEach(item => {
                     totalPrice += item.price * item.quantity;
-                    const imgUrl = item.images ? item.images[0] : item.img; 
+                    const imgUrl = (item.images && item.images.length > 0) ? item.images[0] : 'logo.png'; 
                     container.innerHTML += `
                         <div class="cart-item-modern">
-                            <div class="cart-img-box"><img src="${imgUrl}" alt="${item.name}"></div>
+                            <div class="cart-img-box"><img src="${imgUrl}" alt="${item.name}" onerror="this.src='logo.png'"></div>
                             <div class="cart-info-modern">
                                 <div class="cart-title">${item.name}</div>
                                 <div class="cart-variant">${item.option}</div>
@@ -692,20 +666,65 @@
             if(filtered.length === 0) { container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #999;">Không tìm thấy sản phẩm nào :(</div>'; return; }
             filtered.forEach(p => {
                 let stars = ''; for(let i=0; i<Math.floor(p.rating); i++) stars += '<i class="ri-star-fill"></i>'; if(p.rating % 1 !== 0) stars += '<i class="ri-star-half-fill"></i>';
-                const imageArray = p.images ? p.images : [p.img]; 
+                const imageArray = (p.images && p.images.length > 0) ? p.images : ['logo.png']; 
                 const imagesHTML = imageArray.map(src => `<img src="${src}" alt="${p.name}" loading="lazy" onerror="this.src='logo.png'">`).join('');
                 const buttonsHTML = imageArray.length > 1 ? `<button class="slider-btn btn-prev" onclick="scrollImage(this, -1)"><i class="ri-arrow-left-s-line"></i></button><button class="slider-btn btn-next" onclick="scrollImage(this, 1)"><i class="ri-arrow-right-s-line"></i></button>` : '';
                 container.innerHTML += `<div class="product-card"><div class="img-wrapper"><div class="p-img-slider">${imagesHTML}</div>${buttonsHTML}</div><div class="p-info"><span class="p-cat">${p.cat==='rongbien'?'Rong Biển':(p.cat==='nam'?'Nấm':'Khác')}</span><div class="p-name">${p.name}</div><div class="star-rating">${stars}</div><div class="p-price">${p.price.toLocaleString()}đ</div><div class="p-actions"><button class="btn-view" onclick="showDetail(${p.id})">Chi tiết</button><button class="btn-add" onclick="addToCart(${p.id})"><i class="ri-add-line"></i></button></div></div></div>`;
             });
         }
 
+        function validateOrder() {
+            let isValid = true;
+            
+            // RESET LỖI
+            const reset = (id) => {
+                const grp = document.getElementById('group-' + id);
+                grp.classList.remove('error');
+                document.getElementById('c-' + id).classList.remove('input-error');
+            };
+            
+            // BÁO LỖI
+            const showError = (id) => {
+                const grp = document.getElementById('group-' + id);
+                grp.classList.add('error');
+                document.getElementById('c-' + id).classList.add('input-error');
+                isValid = false;
+            };
+
+            // GIÁ TRỊ
+            const name = document.getElementById('c-name').value.trim();
+            const phone = document.getElementById('c-phone').value.trim();
+            const email = document.getElementById('c-email').value.trim();
+            const address = document.getElementById('c-address').value.trim();
+
+            reset('name'); reset('phone'); reset('email'); reset('address');
+
+            if(!name) showError('name');
+            
+            // Regex SDT 
+            const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})$/;
+            if(!phone || !phoneRegex.test(phone)) showError('phone');
+
+            // Regex Email 
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!email || !emailRegex.test(email)) showError('email');
+
+            if(!address) showError('address');
+
+            return isValid;
+        }
+
         function submitOrder() {
+       
+            if(!validateOrder()) {
+                showToast("Vui lòng kiểm tra lại thông tin!", 'error');
+                return;
+            }
+
             const name = document.getElementById('c-name').value.trim();
             const phone = document.getElementById('c-phone').value.trim();
             const addr = document.getElementById('c-address').value.trim();
             const email = document.getElementById('c-email').value.trim();
-
-            if(!name || !phone || !addr || !email) { showToast("Vui lòng điền đủ thông tin!", 'error'); return; }
 
             const btn = document.getElementById('btn-submit-order');
             const btnText = document.getElementById('btn-text');
@@ -717,8 +736,9 @@
             let finalTotal = rawTotal;
             if(currentDiscount > 0) finalTotal = rawTotal - (rawTotal * currentDiscount);
             const totalStr = finalTotal.toLocaleString('vi-VN') + 'đ';
-            // Cập nhật: Gửi cả Option lên Google Sheet
             const itemsStr = cartItems.map(i => `${i.name} [${i.option}] (${i.quantity})`).join(', ');
+            const method = document.querySelector('input[name="payment-method"]:checked').value;
+            formData.append("PaymentMethod", method);
 
             const formData = new FormData();
             formData.append("OrderId", orderId); formData.append("Name", name); formData.append("Phone", phone);
@@ -726,11 +746,11 @@
             formData.append("Email", email);
 
             if(GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
-                 setTimeout(() => { finishOrder(orderId, totalStr); }, 1000);
+                 setTimeout(() => { finishOrder(orderId, totalStr); }, 1500);
             } else {
                 fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors'})
                 .then(() => { finishOrder(orderId, totalStr); })
-                .catch(err => { finishOrder(orderId, totalStr); });
+                .catch(err => { console.log(err); finishOrder(orderId, totalStr); });
             }
 
             function finishOrder(id, total) {
@@ -754,7 +774,6 @@
             setTimeout(() => { box.style.opacity = '0'; setTimeout(() => box.remove(), 300); }, 3000);
         }
 
-        // TRA CỨU ĐƠN HÀNG ĐẸP
         function checkOrder() {
             const code = document.getElementById('order-id').value.trim().toUpperCase();
             const resultBox = document.getElementById('tracking-result');
@@ -765,7 +784,6 @@
             if(order || demoOrder) {
                 const statusInfo = demoOrder ? {text: "Đang giao hàng", step: 2} : getOrderStatus(order.timestamp);
                 const total = demoOrder ? '150.000đ' : order.total;
-                
                 let s1 = 'active', s2 = '', s3 = '';
                 if(statusInfo.step >= 2) { s1 = 'completed'; s2 = 'active'; }
                 if(statusInfo.step >= 3) { s1 = 'completed'; s2 = 'completed'; s3 = 'active'; }
@@ -795,7 +813,6 @@
             } else { resultBox.innerHTML = `<div style="padding:20px; color:red; background:#fee; border-radius:10px; margin-top:20px;">Không tìm thấy đơn hàng này!</div>`; }
         }
 
-        // LỊCH SỬ ĐƠN HÀNG ĐẸP
         function renderHistory() {
             const list = document.getElementById('order-history-list'); 
             if(!list) return; 
@@ -822,7 +839,16 @@
         function showCheckout() { if(cartItems.length===0) {showToast("Giỏ hàng đang trống!", "error"); return;} document.getElementById('cart-view').classList.add('hidden'); document.getElementById('checkout-view').classList.remove('hidden'); updateCartUI(); }
         function showCart() { document.getElementById('checkout-view').classList.add('hidden'); document.getElementById('success-view').classList.add('hidden'); document.getElementById('cart-view').classList.remove('hidden'); }
 
-        // START
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
         renderProducts('all'); updateCartUI();
     </script>
 </body>
