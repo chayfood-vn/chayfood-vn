@@ -714,8 +714,7 @@
             return isValid;
         }
 
-        function submitOrder() {
-       
+       function submitOrder() {
             if(!validateOrder()) {
                 showToast("Vui lòng kiểm tra lại thông tin!", 'error');
                 return;
@@ -725,6 +724,7 @@
             const phone = document.getElementById('c-phone').value.trim();
             const addr = document.getElementById('c-address').value.trim();
             const email = document.getElementById('c-email').value.trim();
+            const method = document.querySelector('input[name="payment-method"]:checked').value;
 
             const btn = document.getElementById('btn-submit-order');
             const btnText = document.getElementById('btn-text');
@@ -737,13 +737,12 @@
             if(currentDiscount > 0) finalTotal = rawTotal - (rawTotal * currentDiscount);
             const totalStr = finalTotal.toLocaleString('vi-VN') + 'đ';
             const itemsStr = cartItems.map(i => `${i.name} [${i.option}] (${i.quantity})`).join(', ');
-            const method = document.querySelector('input[name="payment-method"]:checked').value;
-            formData.append("PaymentMethod", method);
 
             const formData = new FormData();
             formData.append("OrderId", orderId); formData.append("Name", name); formData.append("Phone", phone);
             formData.append("Address", addr); formData.append("Items", itemsStr); formData.append("Total", totalStr); formData.append("Status", "Mới");
             formData.append("Email", email);
+            formData.append("PaymentMethod", method); // Gửi thêm phương thức thanh toán
 
             if(GOOGLE_SCRIPT_URL.includes("DÁN_LINK")) {
                  setTimeout(() => { finishOrder(orderId, totalStr); }, 1500);
@@ -765,7 +764,6 @@
                 showToast('Đặt hàng thành công!', 'success');
             }
         }
-
         function showToast(msg, type) {
             const box = document.createElement('div');
             box.className = `toast ${type}`;
